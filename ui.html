@@ -1,22 +1,118 @@
 <h2>Rectangle Creator</h2>
-<input id="file" type="file" multiple />
+<div id="drop-area">
+  <input id="file-input" type="file" multiple />
+  <button id="reset-file-button">clear</button>
+</div>
+<div id="actions-area"></div>
+<hr />
+<div id="bind-area">
+  <div>
+    <input type="checkbox" id="auto-bind" />
+    <label for="auto-bind">Automatic bind</label>
+  </div>
+  <p>
+    You can populate layers deeply nested in a group. To do so, manualy rename a
+    layer you want to populate — the name of the layer and key in the JSON file
+    must match.
+  </p>
+</div>
+
+<style>
+  #drop-area {
+    border: 1px solid;
+    padding: 20px;
+  }
+  #drop-area.highlight {
+    border-color: #f45;
+  }
+</style>
+
 <script>
-  function onChange(event) {
+  // Variales
+  const actionArea = document.getElementById("actions-area");
+  const dropArea = document.getElementById("drop-area");
+  const fileInput = document.getElementById("file-input");
+
+  // Drag&Drop functions
+  let highlight = (e) => {
+    dropArea.classList.add("highlight");
+  };
+
+  let unhighlight = (e) => {
+    dropArea.classList.remove("highlight");
+  };
+
+  let preventDefaults = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  let handleDrop = (e) => {
+    fileInput.files = e.dataTransfer.files;
+  };
+
+  let onReaderLoad = (e) => {
+    var obj = JSON.parse(e.target.result);
+    mapToButtons(obj);
+  };
+
+  // Listeners
+  dropArea.addEventListener("dragenter", highlight, false);
+  dropArea.addEventListener("dragover", highlight, false);
+  dropArea.addEventListener("dragleave", unhighlight, false);
+  dropArea.addEventListener("drop", handleDrop, false);
+
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
+    dropArea.addEventListener(e, preventDefaults, false);
+  });
+
+  ["dragenter", "dragover"].forEach((e) => {
+    dropArea.addEventListener(e, highlight, false);
+  });
+  ["dragleave", "drop"].forEach((e) => {
+    dropArea.addEventListener(e, unhighlight, false);
+  });
+
+  ////////////////////////////////
+
+  let createButton = (item, obj) => {
+    let button = document.createElement("button");
+    button.innerHTML = item;
+    actionArea.appendChild(button);
+    button.onclick = (e) => {
+      let buttonName = e.target.innerHTML;
+      parent.postMessage(
+        { pluginMessage: { type: "selected", obj, buttonName } },
+        "*"
+      );
+    };
+  };
+
+  let mapToButtons = (obj) => {
+    // map keys inside tthe first array item
+    Object.keys(obj[0]).map((item, i) => {
+      console.log(item);
+      // Object.keys(item).map
+      createButton(item, obj);
+    });
+  };
+
+  ////////////////////////////////
+
+  let onChange = (e) => {
     var reader = new FileReader();
     reader.onload = onReaderLoad;
-    reader.readAsText(event.target.files[0]);
-  }
+    reader.readAsText(e.target.files[0]);
+  };
 
-  function onReaderLoad(event) {
-    var obj = JSON.parse(event.target.result);
-    consoleData(obj);
-  }
+  document.getElementById("file-input").addEventListener("change", onChange);
 
-  function consoleData(obj) {
-    parent.postMessage({ pluginMessage: { type: 'selected' } }, '*');
-    console.log(obj);
-  }
-  document.getElementById('file').addEventListener('change', onChange);
+  ///////////////////////////////
+
+  document.getElementById("reset-file-button").onclick = () => {
+    fileInput.value = "";
+    actionArea.textContent = "";
+  };
 </script>
 
 <!-- <h2>Rectangle Creator</h2>
