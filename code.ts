@@ -13,12 +13,13 @@ let getNodes = (selection, obj, name) => {
 };
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { height: 320 });
+figma.showUI(__html__, { width: 280, height: 320 });
 
 figma.ui.onmessage = (msg) => {
-  getNodes(figma.currentPage.selection, msg.obj, msg.buttonName);
-  // if (msg.type === "selected") {
-  //   // console.log(msg.obj);
-  //   getNodes(figma.currentPage.selection, msg.obj);
-  // }
+  // getNodes(figma.currentPage.selection, msg.obj, msg.buttonName);
+  if (msg.type === "selected") {
+    // console.log(msg.obj);
+    figma.ui.resize(280, 380);
+    getNodes(figma.currentPage.selection, msg.obj, msg.buttonName);
+  }
 };
