@@ -1,11 +1,22 @@
-<h2>Rectangle Creator</h2>
-<div id="drop-area">
-  <input id="file-input" type="file" multiple />
-  <button id="reset-file-button">clear</button>
-</div>
-<div id="actions-area"></div>
-<hr />
-<div id="bind-area">
+<!-- DROP AREA -->
+<section class="section">
+  <div id="drop-area">
+    <input id="file-input" type="file" multiple />
+    <button id="reset-file-button">clear</button>
+  </div>
+  <p>
+    Your JSON file should have a certain structure to be readable.
+  </p>
+</section>
+<!-- ACTIONS AREA -->
+<section class="section">
+  <hr />
+  <h2>File items</h2>
+  <div id="actions-area"></div>
+</section>
+<!-- BIND AREA -->
+<section class="section" id="bind-area">
+  <hr />
   <div>
     <input type="checkbox" id="auto-bind" />
     <label for="auto-bind">Automatic bind</label>
@@ -15,9 +26,13 @@
     layer you want to populate — the name of the layer and key in the JSON file
     must match.
   </p>
-</div>
+</section>
 
+<!-- STYLES -->
 <style>
+  .section {
+    user-select: none;
+  }
   #drop-area {
     border: 1px solid;
     padding: 20px;
@@ -27,33 +42,48 @@
   }
 </style>
 
+<!-- SCRIPTS -->
 <script>
+  // Helper functions
+  const IsJsonString = (str) => {
+    try {
+      let json = JSON.parse(str);
+      return typeof json === "object";
+    } catch (e) {
+      return false;
+    }
+  };
+
   // Variales
   const actionArea = document.getElementById("actions-area");
   const dropArea = document.getElementById("drop-area");
   const fileInput = document.getElementById("file-input");
 
   // Drag&Drop functions
-  let highlight = (e) => {
+  const highlight = (e) => {
     dropArea.classList.add("highlight");
   };
 
-  let unhighlight = (e) => {
+  const unhighlight = (e) => {
     dropArea.classList.remove("highlight");
   };
 
-  let preventDefaults = (e) => {
+  const preventDefaults = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  let handleDrop = (e) => {
+  const handleDrop = (e) => {
     fileInput.files = e.dataTransfer.files;
   };
 
-  let onReaderLoad = (e) => {
+  const onReaderLoad = (e) => {
     var obj = JSON.parse(e.target.result);
-    mapToButtons(obj);
+    if (IsJsonString(e.target.result)) {
+      mapToButtons(obj);
+    } else {
+      console.log(false);
+    }
   };
 
   // Listeners
@@ -75,7 +105,7 @@
 
   ////////////////////////////////
 
-  let createButton = (item, obj) => {
+  const createButton = (item, obj) => {
     let button = document.createElement("button");
     button.innerHTML = item;
     actionArea.appendChild(button);
@@ -88,18 +118,17 @@
     };
   };
 
-  let mapToButtons = (obj) => {
+  const mapToButtons = (obj) => {
     // map keys inside tthe first array item
     Object.keys(obj[0]).map((item, i) => {
       console.log(item);
-      // Object.keys(item).map
       createButton(item, obj);
     });
   };
 
   ////////////////////////////////
 
-  let onChange = (e) => {
+  const onChange = (e) => {
     var reader = new FileReader();
     reader.onload = onReaderLoad;
     reader.readAsText(e.target.files[0]);
@@ -114,21 +143,3 @@
     actionArea.textContent = "";
   };
 </script>
-
-<!-- <h2>Rectangle Creator</h2>
-<p>Count: <input id="count" value="5"></p>
-<button id="create">Create</button>
-<button id="cancel">Cancel</button>
-<script>
-
-document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('count');
-  const count = parseInt(textbox.value, 10);
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
-}
-
-document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
-
-</script> -->
