@@ -11,15 +11,10 @@ let fillTextNodes = (selection, obj, name) => {
 };
 
 let fillImageNodes = (selection, obj, response, i) => {
-  console.log(response);
-  selection.map((item, i) => {
-    if (typeof obj[i] !== "undefined") {
-      // console.log(response);
-      //   let data = imArr[i];
-      //   let imageHash = figma.createImage(data).hash;
-      //   item.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash }];
-    }
-  });
+  // console.log(response);
+  console.log(selection[i]);
+  let imageHash = figma.createImage(response).hash;
+  selection[i].fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash }];
 };
 
 // This shows the HTML page in "ui.html".

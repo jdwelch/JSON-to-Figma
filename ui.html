@@ -124,7 +124,7 @@
     };
   };
 
-  async function getDataArr(obj, item, buttonName) {
+  async function getDataArr(obj, buttonName) {
     obj.map((item, i) => {
       var url = item[buttonName];
       var xmlHTTP = new XMLHttpRequest();
@@ -156,7 +156,7 @@
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
 
-      getDataArr(obj, item, buttonName);
+      getDataArr(obj, item);
     };
   };
 
