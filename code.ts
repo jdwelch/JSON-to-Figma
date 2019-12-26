@@ -10,26 +10,16 @@ let fillTextNodes = (selection, obj, name) => {
   });
 };
 
-let fillImageNodes = (selection, imArr) => {
-  console.log(imArr);
-  // console.log(buttonName);
+let fillImageNodes = (selection, obj, response, i) => {
+  console.log(response);
   selection.map((item, i) => {
-    if (typeof imArr[i] !== "undefined") {
-      let data = imArr[i];
-      let imageHash = figma.createImage(data).hash;
-      item.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash }];
+    if (typeof obj[i] !== "undefined") {
+      // console.log(response);
+      //   let data = imArr[i];
+      //   let imageHash = figma.createImage(data).hash;
+      //   item.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash }];
     }
   });
-  // let data = newBytes as Uint8Array;
-  // let imageHash = figma.createImage(new Uint8Array(data)).hash;
-  // selection.map((item, i) => {
-  //   console.log(item.fills);
-  //   console.log(imageHash);
-  //   item.fills = [
-  //     { type: "SOLID", color: { r: 1, g: 0, b: 0 } },
-  //     { type: "IMAGE", scaleMode: "FILL", imageHash }
-  //   ];
-  // });
 };
 
 // This shows the HTML page in "ui.html".
@@ -49,7 +39,7 @@ figma.ui.onmessage = (msg) => {
     // console.log(msg.obj);
     // console.log(msg.newBytes);
     // console.log(figma.currentPage.selection);
-    fillImageNodes(figma.currentPage.selection, msg.imArr);
+    fillImageNodes(figma.currentPage.selection, msg.obj, msg.response, msg.i);
 
     // await fillImageNodes(figma.currentPage.selection, msg.obj, msg.imgArr);
   }

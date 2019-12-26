@@ -124,38 +124,27 @@
     };
   };
 
-  function convertDataURIToBinary(dataURI) {
-    var BASE64_MARKER = ";base64,";
-    var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-    var base64 = dataURI.substring(base64Index);
-    var raw = window.atob(base64);
-    var rawLength = raw.length;
-    var array = new Uint8Array(new ArrayBuffer(rawLength));
-
-    for (i = 0; i < rawLength; i++) {
-      array[i] = raw.charCodeAt(i);
-    }
-    return array;
-  }
-
-  let imArr = [];
-
-  function toDataURL(url, i) {
-    var xmlHTTP = new XMLHttpRequest();
-    xmlHTTP.open("GET", url, true);
-    xmlHTTP.responseType = "arraybuffer";
-    xmlHTTP.onload = function(e) {
-      let response = new Uint8Array(this.response);
-      console.log(i + " its " + url);
-      // imArr.push(response);
-      imArr.push(response);
-    };
-    xmlHTTP.send();
-  }
-
-  async function getDataArr(item, obj, buttonName) {
-    let results = obj.map((item, i) => {
-      toDataURL(item[buttonName], i);
+  async function getDataArr(obj, item, buttonName) {
+    obj.map((item, i) => {
+      var url = item[buttonName];
+      var xmlHTTP = new XMLHttpRequest();
+      xmlHTTP.open("GET", url, true);
+      xmlHTTP.responseType = "arraybuffer";
+      xmlHTTP.onload = function(e) {
+        let response = new Uint8Array(this.response);
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "selected-image",
+              obj,
+              response,
+              i
+            }
+          },
+          "*"
+        );
+      };
+      xmlHTTP.send();
     });
   }
 
@@ -167,15 +156,7 @@
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
 
-      getDataArr(item, obj, buttonName).then(
-        setTimeout(() => {
-          parent.postMessage(
-            { pluginMessage: { type: "selected-image", imArr, buttonName } },
-            "*"
-          );
-          imArr = [];
-        }, 500)
-      );
+      getDataArr(obj, item, buttonName);
     };
   };
 
