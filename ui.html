@@ -49,53 +49,41 @@
 <!-- SCRIPTS -->
 <script>
   // Helper functions
-  const IsJsonString = str => {
+  const IsJsonString = (str) => {
     try {
       let json = JSON.parse(str);
-      return typeof json === 'object';
+      return typeof json === "object";
     } catch (e) {
       return false;
     }
   };
 
-  // const isPicture = obj => {
-  //   obj.map(item => {
-  //     Object.values(item).map(val => {
-  //       if (val.endsWith('.jpeg')) {
-  //         return true;
-  //       } else {
-  //         return false;
-  //       }
-  //     });
-  //   });
-  // };
-
   // Variales
-  const actionArea = document.getElementById('actions-area');
-  const stringBtnArea = document.getElementById('string-actions');
-  const imageBtnArea = document.getElementById('image-actions');
-  const dropArea = document.getElementById('drop-area');
-  const fileInput = document.getElementById('file-input');
+  const actionArea = document.getElementById("actions-area");
+  const stringBtnArea = document.getElementById("string-actions");
+  const imageBtnArea = document.getElementById("image-actions");
+  const dropArea = document.getElementById("drop-area");
+  const fileInput = document.getElementById("file-input");
 
   // Drag&Drop functions
-  const highlight = e => {
-    dropArea.classList.add('highlight');
+  const highlight = (e) => {
+    dropArea.classList.add("highlight");
   };
 
-  const unhighlight = e => {
-    dropArea.classList.remove('highlight');
+  const unhighlight = (e) => {
+    dropArea.classList.remove("highlight");
   };
 
-  const preventDefaults = e => {
+  const preventDefaults = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleDrop = e => {
+  const handleDrop = (e) => {
     fileInput.files = e.dataTransfer.files;
   };
 
-  const onReaderLoad = e => {
+  const onReaderLoad = (e) => {
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
       mapToButtons(obj);
@@ -105,59 +93,98 @@
   };
 
   // Listeners
-  dropArea.addEventListener('dragenter', highlight, false);
-  dropArea.addEventListener('dragover', highlight, false);
-  dropArea.addEventListener('dragleave', unhighlight, false);
-  dropArea.addEventListener('drop', handleDrop, false);
+  dropArea.addEventListener("dragenter", highlight, false);
+  dropArea.addEventListener("dragover", highlight, false);
+  dropArea.addEventListener("dragleave", unhighlight, false);
+  dropArea.addEventListener("drop", handleDrop, false);
 
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(e => {
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
     dropArea.addEventListener(e, preventDefaults, false);
   });
 
-  ['dragenter', 'dragover'].forEach(e => {
+  ["dragenter", "dragover"].forEach((e) => {
     dropArea.addEventListener(e, highlight, false);
   });
-  ['dragleave', 'drop'].forEach(e => {
+  ["dragleave", "drop"].forEach((e) => {
     dropArea.addEventListener(e, unhighlight, false);
   });
 
   ////////////////////////////////
 
   const createStringButton = (item, obj) => {
-    let button = document.createElement('button');
+    let button = document.createElement("button");
     button.innerHTML = item;
     stringBtnArea.appendChild(button);
-    button.onclick = e => {
+    button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
       parent.postMessage(
-        { pluginMessage: { type: 'selected', obj, buttonName } },
-        '*'
+        { pluginMessage: { type: "selected-text", obj, buttonName } },
+        "*"
       );
     };
   };
+
+  function convertDataURIToBinary(dataURI) {
+    var BASE64_MARKER = ";base64,";
+    var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+    var base64 = dataURI.substring(base64Index);
+    var raw = window.atob(base64);
+    var rawLength = raw.length;
+    var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+    for (i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+    return array;
+  }
+
+  let imArr = [];
+
+  function toDataURL(url) {
+    var xmlHTTP = new XMLHttpRequest();
+    xmlHTTP.open("GET", url, true);
+    xmlHTTP.responseType = "arraybuffer";
+    xmlHTTP.onload = function(e) {
+      let rersponse = new Uint8Array(this.response);
+      imArr.push(rersponse);
+    };
+    xmlHTTP.send();
+  }
+
+  async function getDataArr(item, obj, buttonName) {
+    let results = obj.map(async (item) => {
+      await toDataURL(item[buttonName]);
+    });
+  }
 
   const createImgButton = (item, obj) => {
-    let button = document.createElement('button');
+    let button = document.createElement("button");
     button.innerHTML = item;
     imageBtnArea.appendChild(button);
-    button.onclick = e => {
+
+    button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
-      parent.postMessage(
-        { pluginMessage: { type: 'selected', obj, buttonName } },
-        '*'
+
+      getDataArr(item, obj, buttonName).then(
+        setTimeout(() => {
+          parent.postMessage(
+            { pluginMessage: { type: "selected-image", imArr, buttonName } },
+            "*"
+          );
+        }, 100)
       );
     };
   };
 
-  const mapToButtons = obj => {
+  const mapToButtons = (obj) => {
     // map keys inside tthe first array item
     Object.keys(obj[0]).map((item, i) => {
       let val = obj[0][item];
       let isPicture =
-        val.toUpperCase().endsWith('.JPEG') ||
-        val.toUpperCase().endsWith('.JPG') ||
-        val.toUpperCase().endsWith('.PNG') ||
-        val.toUpperCase().endsWith('.GIF')
+        val.toUpperCase().endsWith(".JPEG") ||
+        val.toUpperCase().endsWith(".JPG") ||
+        val.toUpperCase().endsWith(".PNG") ||
+        val.toUpperCase().endsWith(".GIF")
           ? createImgButton(item, obj)
           : createStringButton(item, obj);
     });
@@ -165,18 +192,18 @@
 
   ////////////////////////////////
 
-  const onChange = e => {
+  const onChange = (e) => {
     var reader = new FileReader();
     reader.onload = onReaderLoad;
     reader.readAsText(e.target.files[0]);
   };
 
-  document.getElementById('file-input').addEventListener('change', onChange);
+  document.getElementById("file-input").addEventListener("change", onChange);
 
   ///////////////////////////////
 
-  document.getElementById('reset-file-button').onclick = () => {
-    fileInput.value = '';
-    actionArea.textContent = '';
+  document.getElementById("reset-file-button").onclick = () => {
+    fileInput.value = "";
+    actionArea.textContent = "";
   };
 </script>
