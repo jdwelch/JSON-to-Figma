@@ -3,18 +3,54 @@
     "name": "Josef Azizov",
     "job": "Software Engineering",
     "birth": "1233",
-    "avatar": "https://tinyfac.es/data/avatars/475605E3-69C5-4D2B-8727-61B7BB8C4699-500w.jpeg"
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber1.jpg"
   },
   {
     "name": "Alex",
     "job": "Lead of Engineering",
     "birth": "1928",
-    "avatar": "https://tinyfac.es/data/avatars/AEF44435-B547-4B84-A2AE-887DFAEE6DDF-200w.jpeg"
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber2.jpg"
   },
   {
     "name": "Tatiana",
     "job": "Developer",
     "birth": "2001",
-    "avatar": "https://tinyfac.es/data/avatars/1C4EEDC2-FE9C-40B3-A2C9-A038873EE692-500w.jpeg"
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber3.jpg"
+  },
+  {
+    "name": "Pavel",
+    "job": "Lead of Engineering",
+    "birth": "1928",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber4%20(1).jpg"
+  },
+  {
+    "name": "Den",
+    "job": "Developer",
+    "birth": "2001",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber5.jpg"
+  },
+  {
+    "name": "Sveta",
+    "job": "Lead of Engineering",
+    "birth": "1928",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber6.jpg"
+  },
+  {
+    "name": "Dima",
+    "job": "Developer",
+    "birth": "2001",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber7.jpg"
+  },
+  {
+    "name": "Michal",
+    "job": "Lead of Engineering",
+    "birth": "1928",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber8.jpg"
+  },
+  {
+    "name": "Sonya",
+    "job": "Developer",
+    "birth": "2001",
+    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber9.jpg"
   }
 ]

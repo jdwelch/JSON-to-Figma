@@ -140,20 +140,22 @@
 
   let imArr = [];
 
-  function toDataURL(url) {
+  function toDataURL(url, i) {
     var xmlHTTP = new XMLHttpRequest();
     xmlHTTP.open("GET", url, true);
     xmlHTTP.responseType = "arraybuffer";
     xmlHTTP.onload = function(e) {
-      let rersponse = new Uint8Array(this.response);
-      imArr.push(rersponse);
+      let response = new Uint8Array(this.response);
+      console.log(i + " its " + url);
+      // imArr.push(response);
+      imArr.push(response);
     };
     xmlHTTP.send();
   }
 
   async function getDataArr(item, obj, buttonName) {
-    let results = obj.map(async (item) => {
-      await toDataURL(item[buttonName]);
+    let results = obj.map((item, i) => {
+      toDataURL(item[buttonName], i);
     });
   }
 
@@ -171,7 +173,8 @@
             { pluginMessage: { type: "selected-image", imArr, buttonName } },
             "*"
           );
-        }, 100)
+          imArr = [];
+        }, 500)
       );
     };
   };

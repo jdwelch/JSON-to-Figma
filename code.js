@@ -14,7 +14,7 @@ let fillImageNodes = (selection, imArr) => {
     selection.map((item, i) => {
         if (typeof imArr[i] !== "undefined") {
             let data = imArr[i];
-            let imageHash = figma.createImage(new Uint8Array(data)).hash;
+            let imageHash = figma.createImage(data).hash;
             item.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash }];
         }
     });
