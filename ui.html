@@ -12,19 +12,18 @@
 <section class="section">
   <hr />
   <div id="actions-area">
-    <h2>String items</h2>
-    <div id="string-actions"></div>
-    <h2>Image items</h2>
-    <div id="image-actions"></div>
+    <div id="string-actions">
+      <h2>String items</h2>
+    </div>
+    <div id="image-actions">
+      <h2>Image items</h2>
+    </div>
   </div>
 </section>
 <!-- BIND AREA -->
 <section class="section" id="bind-area">
   <hr />
-  <div>
-    <input type="checkbox" id="auto-bind" />
-    <label for="auto-bind">Automatic bind</label>
-  </div>
+  <h2>Automatic bind</h2>
   <p>
     You can populate layers deeply nested in a group. To do so, manualy rename a
     layer you want to populate — the name of the layer and key in the JSON file
@@ -59,11 +58,14 @@
   };
 
   // Variales
+  const dropArea = document.getElementById("drop-area");
+  const fileInput = document.getElementById("file-input");
+  //
   const actionArea = document.getElementById("actions-area");
   const stringBtnArea = document.getElementById("string-actions");
   const imageBtnArea = document.getElementById("image-actions");
-  const dropArea = document.getElementById("drop-area");
-  const fileInput = document.getElementById("file-input");
+  //
+  const bindArea = document.getElementById("bind-area");
 
   // Drag&Drop functions
   const highlight = (e) => {
@@ -86,7 +88,9 @@
   const onReaderLoad = (e) => {
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
+      createBindButton(obj);
       mapToButtons(obj);
+      parent.postMessage({ pluginMessage: { type: "change-size" } }, "*");
     } else {
       console.log(false);
     }
@@ -172,6 +176,18 @@
           ? createImgButton(item, obj)
           : createStringButton(item, obj);
     });
+  };
+
+  ////////////////////////////////
+
+  const createBindButton = (obj) => {
+    let button = document.createElement("button");
+    button.innerHTML = "Populate";
+    bindArea.appendChild(button);
+
+    button.onclick = (e) => {
+      parent.postMessage({ pluginMessage: { type: "auto-bind", obj } }, "*");
+    };
   };
 
   ////////////////////////////////
