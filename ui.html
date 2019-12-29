@@ -23,7 +23,10 @@
 <!-- BIND AREA -->
 <section class="section" id="bind-area">
   <hr />
-  <h2>Automatic bind</h2>
+  <div>
+    <input type="checkbox" id="random-paste" />
+    <label for="random-paste">Random order</label>
+  </div>
   <p>
     You can populate layers deeply nested in a group. To do so, manualy rename a
     layer you want to populate — the name of the layer and key in the JSON file
@@ -47,7 +50,9 @@
 
 <!-- SCRIPTS -->
 <script>
-  // Helper functions
+  ////////////////////////////////
+
+  // Util functions
   const IsJsonString = (str) => {
     try {
       let json = JSON.parse(str);
@@ -57,6 +62,17 @@
     }
   };
 
+  const shuffle = (arr) => {
+    const newArr = arr.slice();
+    for (let i = newArr.length - 1; i > 0; i--) {
+      const rand = Math.floor(Math.random() * (i + 1));
+      [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
+    }
+    return newArr;
+  };
+
+  ////////////////////////////////
+
   // Variales
   const dropArea = document.getElementById("drop-area");
   const fileInput = document.getElementById("file-input");
@@ -65,7 +81,9 @@
   const stringBtnArea = document.getElementById("string-actions");
   const imageBtnArea = document.getElementById("image-actions");
   //
-  const bindArea = document.getElementById("bind-area");
+  const randomCheckbox = document.getElementById("random-paste");
+
+  ////////////////////////////////
 
   // Drag&Drop functions
   const highlight = (e) => {
@@ -88,7 +106,6 @@
   const onReaderLoad = (e) => {
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
-      createBindButton(obj);
       mapToButtons(obj);
       parent.postMessage({ pluginMessage: { type: "change-size" } }, "*");
     } else {
@@ -109,6 +126,7 @@
   ["dragenter", "dragover"].forEach((e) => {
     dropArea.addEventListener(e, highlight, false);
   });
+
   ["dragleave", "drop"].forEach((e) => {
     dropArea.addEventListener(e, unhighlight, false);
   });
@@ -121,10 +139,23 @@
     stringBtnArea.appendChild(button);
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
-      parent.postMessage(
-        { pluginMessage: { type: "selected-text", obj, buttonName } },
-        "*"
-      );
+      let newObj = obj;
+
+      if (randomCheckbox.checked) {
+        // console.log(obj);
+        oldObj = [...obj];
+        newObj = shuffle(oldObj);
+
+        parent.postMessage(
+          { pluginMessage: { type: "selected-text", newObj, buttonName } },
+          "*"
+        );
+      } else {
+        parent.postMessage(
+          { pluginMessage: { type: "selected-text", newObj, buttonName } },
+          "*"
+        );
+      }
     };
   };
 
@@ -159,8 +190,15 @@
 
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
+      let newObj = obj;
 
-      getDataArr(obj, item);
+      if (randomCheckbox.checked) {
+        oldObj = [...obj];
+        newObj = shuffle(oldObj);
+        getDataArr(newObj, item);
+      } else {
+        getDataArr(newObj, item);
+      }
     };
   };
 
@@ -172,18 +210,6 @@
         ? createImgButton(item, obj)
         : createStringButton(item, obj);
     });
-  };
-
-  ////////////////////////////////
-
-  const createBindButton = (obj) => {
-    let button = document.createElement("button");
-    button.innerHTML = "Populate";
-    bindArea.appendChild(button);
-
-    button.onclick = (e) => {
-      parent.postMessage({ pluginMessage: { type: "auto-bind", obj } }, "*");
-    };
   };
 
   ////////////////////////////////
