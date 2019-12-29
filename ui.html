@@ -168,13 +168,9 @@
     // map keys inside tthe first array item
     Object.keys(obj[0]).map((item, i) => {
       let val = obj[0][item];
-      let isPicture =
-        val.toUpperCase().endsWith(".JPEG") ||
-        val.toUpperCase().endsWith(".JPG") ||
-        val.toUpperCase().endsWith(".PNG") ||
-        val.toUpperCase().endsWith(".GIF")
-          ? createImgButton(item, obj)
-          : createStringButton(item, obj);
+      let isPicture = val.toUpperCase().startsWith("HTTPS")
+        ? createImgButton(item, obj)
+        : createStringButton(item, obj);
     });
   };
 

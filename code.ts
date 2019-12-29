@@ -6,6 +6,7 @@ const fillTextNodes = (selection, obj, name) => {
       figma.loadFontAsync(item.fontName).then(() => {
         item.characters = obj[i][name];
       });
+      console.log(`text for the node "${item.name}" changed`);
     }
   });
 };
@@ -16,19 +17,50 @@ const fillImageNodes = (selection, obj, response, imageIndex) => {
     selection[imageIndex].fills = [
       { type: "IMAGE", scaleMode: "FILL", imageHash }
     ];
-  } else {
-    return;
+    console.log(`text for the node "${selection[imageIndex].name}" changed`);
   }
 };
 
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__, { width: 280, height: 320 });
 
-const matchNames = (selection, obj) => {
-  let JSONKeys = Object.keys(obj[0]);
-  selection.map((item, i) => {
-    // console.log(Object.keys(obj[0]));
+const matchNames = (selected, obj) => {
+  const isPicture = (val) => {
+    if (val.toUpperCase().startsWith("HTTPS")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const JSONKeys = Object.keys(obj[0]).map((item, i) => {
+    return item;
   });
+
+  if (selected.length > 0) {
+    selected.map((item, i) => {
+      const children = item["children"];
+      if (children.length > 0) {
+        children.map((item, j) => {
+          if (JSONKeys.includes(item.name)) {
+            const objName = obj[i][item.name];
+            if (isPicture(objName)) {
+              console.log(objName);
+              console.log("image layer");
+            } else {
+              console.log(item);
+              figma.loadFontAsync(item.fontName).then(() => {
+                item.characters = objName;
+              });
+              console.log(`text for the node "${item.name}" changed`);
+            }
+          }
+        });
+      }
+    });
+  } else {
+    console.error("Nothing selected");
+  }
 };
 
 figma.ui.onmessage = (msg) => {
@@ -49,12 +81,5 @@ figma.ui.onmessage = (msg) => {
     const selected = figma.currentPage.selection;
     matchNames(selected, msg.obj);
     // console.log(figma.currentPage.selection);
-    if (selected.length > 0) {
-      figma.currentPage.selection.map((item) => {
-        console.log(item["children"]);
-      });
-    } else {
-      console.error("Nothing selected");
-    }
   }
 };
