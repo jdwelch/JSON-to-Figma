@@ -14,11 +14,11 @@
   </section>
   <!-- ACTIONS AREA -->
   <section class="section" id="actions-area">
-    <div class="sub-section">
+    <div class="sub-section" id="actions-area-string">
       <h2>String items</h2>
       <div id="string-actions"></div>
     </div>
-    <div class="sub-section">
+    <div class="sub-section" id="actions-area-image">
       <h2>Image items</h2>
       <div id="image-actions"></div>
     </div>
@@ -76,8 +76,10 @@
   const fileInput = document.getElementById("file-input");
   //
   const actionArea = document.getElementById("actions-area");
-  const stringBtnArea = document.getElementById("string-actions");
-  const imageBtnArea = document.getElementById("image-actions");
+  const actionAreaString = document.getElementById("actions-area-string");
+  const actionAreaImage = document.getElementById("actions-area-image");
+  const stringActions = document.getElementById("string-actions");
+  const imageActions = document.getElementById("image-actions");
   //
   const randomArea = document.getElementById("random-area"); 
   const randomCheckbox = document.getElementById("random-paste");
@@ -105,11 +107,14 @@
 
   const clearTheData = () => {
     actionArea.style.display = "none";
+    actionAreaString.style.display = "none";
+    actionAreaImage.style.display = "none";
     randomArea.style.display = "none";
     dropAreaInfo.style.display = "inline-block";
-    stringBtnArea.textContent = "";
-    imageBtnArea.textContent = "";
+    stringActions.textContent = "";
+    imageActions.textContent = "";
   };
+ 
 
   ////////////////////////////////
 
@@ -168,7 +173,7 @@
   const createStringButton = (item, obj) => {
     let button = document.createElement("button");
     button.innerHTML = item;
-    stringBtnArea.appendChild(button);
+    stringActions.appendChild(button);
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
       let newObj = obj;
@@ -218,7 +223,7 @@
   const createImgButton = (item, obj) => {
     let button = document.createElement("button");
     button.innerHTML = item;
-    imageBtnArea.appendChild(button);
+    imageActions.appendChild(button);
 
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
@@ -238,9 +243,13 @@
     // map keys inside tthe first array item
     Object.keys(obj[0]).map((item, i) => {
       let val = obj[0][item];
-      let isPicture = val.toUpperCase().startsWith("HTTPS")
-        ? createImgButton(item, obj)
-        : createStringButton(item, obj);
+      if (val.toUpperCase().startsWith("HTTPS")) {
+        actionAreaImage.style.display = "inline-block";
+        createImgButton(item, obj)
+      } else {
+        actionAreaString.style.display = "inline-block";
+        createStringButton(item, obj)
+      }
     });
   };
 
