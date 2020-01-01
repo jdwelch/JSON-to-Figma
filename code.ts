@@ -27,12 +27,21 @@ figma.ui.onmessage = (msg) => {
     // console.log(msg.obj);
     figma.ui.resize(280, 540);
   }
+
   if (msg.type === "selected-text") {
     // console.log(msg.obj);
-    fillTextNodes(figma.currentPage.selection, msg.newObj, msg.buttonName);
+    if (figma.currentPage.selection.length > 0) {
+      fillTextNodes(figma.currentPage.selection, msg.newObj, msg.buttonName);
+    } else {
+      alert("Please select layers");
+    }
   }
   if (msg.type === "selected-image") {
     // console.log(msg.obj);
-    fillImageNodes(figma.currentPage.selection, msg.response, msg.i);
+    if (figma.currentPage.selection.length > 0) {
+      fillImageNodes(figma.currentPage.selection, msg.response, msg.i);
+    } else {
+      alert("Please select layers");
+    }
   }
 };
