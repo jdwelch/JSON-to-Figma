@@ -1,17 +1,26 @@
 <!-- DROP AREA -->
 <main class="wrapper">
-  <section class="section">
-    <div id="drop-area">
-      <input id="file-input" type="file" multiple />
-      <button id="reset-file-button">clear</button>
+  <div id="drop-area">
+    <div style="margin: auto;">
+      <div id="drop-area-not-uploaded">
+        <span>Drag & Drop your JSON</span>
+        <label class="btn btn-primary">
+          <input id="file-input" type="file" multiple />
+          Upload
+        </label>
+      </div>
+
+      <div id="drop-area-uploaded">
+        <button id="reset-file-button">clear</button>
+      </div>
     </div>
-    <div id="drop-area-info">
-    <p >
+  </div>
+  <div id="drop-area-info">
+    <p>
       Your JSON file should have a
       <a href="#" target="_blank">certain structure</a> to be readable.
     </p>
-    <div>
-  </section>
+  </div>
   <!-- ACTIONS AREA -->
   <section class="section" id="actions-area">
     <div class="sub-section" id="actions-area-string">
@@ -44,6 +53,28 @@
     display: flex;
     flex-direction: column;
   }
+  .btn {
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 1px 0 1px 0;
+    padding: 6px 16px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    outline: none;
+  }
+  .btn-primary {
+    color: #ffffff;
+    background-color: #18a0fb;
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    transition: background-color 0.12s ease;
+  }
+  .btn-primary:hover {
+    background-color: #1290e4;
+  }
   .divider {
     margin: 0 -16px;
   }
@@ -53,13 +84,51 @@
     box-sizing: border-box;
   }
   #drop-area {
-    border: 1px solid;
-    padding: 20px;
-    margin: 0 -16px;
+    box-sizing: border-box;
+    padding: 24px;
+    min-height: 140px;
+    margin: -8px -16px 0;
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   #drop-area.highlight {
-    border-color: #f45;
+    border: 1px solid #f45;
   }
+  /*  */
+  #drop-area-not-uploaded {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #drop-area-not-uploaded input[type="file"] {
+    display: none;
+  }
+  #drop-area-not-uploaded > span {
+    font-family: "Inter", sans-serif;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.8);
+    margin-bottom: 12px;
+  }
+  /*  */
+  #drop-area-uploaded {
+    display: none;
+  }
+  /*  */
+  #drop-area-info {
+    font-family: "Inter", sans-serif;
+    padding: 0 8px;
+  }
+  #drop-area-info p {
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  /*  */
   #actions-area {
     display: none;
   }
@@ -81,7 +150,7 @@
   const stringActions = document.getElementById("string-actions");
   const imageActions = document.getElementById("image-actions");
   //
-  const randomArea = document.getElementById("random-area"); 
+  const randomArea = document.getElementById("random-area");
   const randomCheckbox = document.getElementById("random-paste");
 
   ////////////////////////////////
@@ -114,7 +183,6 @@
     stringActions.textContent = "";
     imageActions.textContent = "";
   };
- 
 
   ////////////////////////////////
 
@@ -179,7 +247,6 @@
       let newObj = obj;
 
       if (randomCheckbox.checked) {
-        // console.log(obj);
         oldObj = [...obj];
         newObj = shuffle(oldObj);
 
@@ -245,10 +312,10 @@
       let val = obj[0][item];
       if (val.toUpperCase().startsWith("HTTPS")) {
         actionAreaImage.style.display = "inline-block";
-        createImgButton(item, obj)
+        createImgButton(item, obj);
       } else {
         actionAreaString.style.display = "inline-block";
-        createStringButton(item, obj)
+        createStringButton(item, obj);
       }
     });
   };
