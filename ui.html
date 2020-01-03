@@ -2,6 +2,15 @@
 <main class="wrapper">
   <div id="drop-area">
     <div style="margin: auto;">
+      <div id="upload-icon">
+        <svg fill="none" viewBox="0 0 17 21">
+          <path
+            fill="#fff"
+            d="M8.414.362l8.215 8.215-.707.708-7.008-7.009v17.827h-1V2.276L.905 9.285l-.707-.708L8.414.362z"
+          />
+        </svg>
+      </div>
+
       <div id="drop-area-not-uploaded">
         <span>Drag & Drop your JSON</span>
         <label class="btn btn-primary">
@@ -83,7 +92,37 @@
     margin: 8px;
     box-sizing: border-box;
   }
+  /*  */
+  #upload-icon {
+    position: absolute;
+    background-color: #18a0fb;
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    transform: translate(-50%, calc(-50% + 0px)) scale(0);
+    transform-origin: center bottom;
+    /* opacity: 0; */
+    transition: all 0.2s ease;
+  }
+  #upload-icon svg {
+    width: 16px;
+    height: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  #upload-icon.highlight {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  /*  */
   #drop-area {
+    overflow: hidden;
+    position: relative;
     box-sizing: border-box;
     padding: 24px;
     min-height: 140px;
@@ -92,15 +131,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.2s ease;
   }
   #drop-area.highlight {
-    border: 1px solid #f45;
+    background-color: #e7f4fc;
   }
   /*  */
   #drop-area-not-uploaded {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.2s ease;
   }
   #drop-area-not-uploaded input[type="file"] {
     display: none;
@@ -112,6 +153,10 @@
     line-height: 16px;
     color: rgba(0, 0, 0, 0.8);
     margin-bottom: 12px;
+  }
+  #drop-area-not-uploaded.highlight {
+    transform: translateY(-20px) scale(0.8);
+    opacity: 0;
   }
   /*  */
   #drop-area-uploaded {
@@ -152,6 +197,9 @@
   //
   const randomArea = document.getElementById("random-area");
   const randomCheckbox = document.getElementById("random-paste");
+  //
+  const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
+  const uploadIcon = document.getElementById("upload-icon");
 
   ////////////////////////////////
 
@@ -189,10 +237,14 @@
   // Drag&Drop functions
   const highlight = (e) => {
     dropArea.classList.add("highlight");
+    dropAreaNotUploaded.classList.add("highlight");
+    uploadIcon.classList.add("highlight");
   };
 
   const unhighlight = (e) => {
     dropArea.classList.remove("highlight");
+    dropAreaNotUploaded.classList.remove("highlight");
+    uploadIcon.classList.remove("highlight");
   };
 
   const preventDefaults = (e) => {
