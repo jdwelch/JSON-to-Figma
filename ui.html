@@ -36,10 +36,6 @@
       <h2>String items</h2>
       <div id="string-actions"></div>
     </div>
-    <div class="sub-section" id="actions-area-image">
-      <h2>Image items</h2>
-      <div id="image-actions"></div>
-    </div>
   </section>
   <!-- RANDOM AREA -->
   <section class="section" id="random-area">
@@ -49,8 +45,7 @@
       <label for="random-paste">Random order</label>
     </div>
     <p>
-      All selected items will be filled in the same order as in the JSON file
-      but you can switch this feature off with this switcher.
+      All selected items will be filled in a random order.
     </p>
   </section>
 </main>
@@ -71,6 +66,7 @@
     border-radius: 6px;
     outline: none;
   }
+  /*  */
   .btn-primary {
     color: #ffffff;
     background-color: #18a0fb;
@@ -84,6 +80,23 @@
   .btn-primary:hover {
     background-color: #1290e4;
   }
+  /*  */
+  .btn-secondary {
+    color: rgba(0, 0, 0, 0.8);
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    transition: all 0.12s ease;
+  }
+  .btn-secondary:hover {
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  /*  */
   .divider {
     margin: 0 -16px;
   }
@@ -193,7 +206,6 @@
   const actionAreaString = document.getElementById("actions-area-string");
   const actionAreaImage = document.getElementById("actions-area-image");
   const stringActions = document.getElementById("string-actions");
-  const imageActions = document.getElementById("image-actions");
   //
   const randomArea = document.getElementById("random-area");
   const randomCheckbox = document.getElementById("random-paste");
@@ -225,11 +237,9 @@
   const clearTheData = () => {
     actionArea.style.display = "none";
     actionAreaString.style.display = "none";
-    actionAreaImage.style.display = "none";
     randomArea.style.display = "none";
     dropAreaInfo.style.display = "inline-block";
     stringActions.textContent = "";
-    imageActions.textContent = "";
   };
 
   ////////////////////////////////
@@ -293,6 +303,9 @@
   const createStringButton = (item, obj) => {
     let button = document.createElement("button");
     button.innerHTML = item;
+    button.classList.add("btn");
+    button.classList.add("btn-secondary");
+    button.style.cssText = "margin-right: 8px; margin-bottom: 8px";
     stringActions.appendChild(button);
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
@@ -315,60 +328,12 @@
     };
   };
 
-  async function getDataArr(obj, buttonName) {
-    obj.map((item, i) => {
-      var url = item[buttonName];
-      var xmlHTTP = new XMLHttpRequest();
-      xmlHTTP.open("GET", url, true);
-      xmlHTTP.responseType = "arraybuffer";
-      xmlHTTP.onload = function(e) {
-        let response = new Uint8Array(this.response);
-        parent.postMessage(
-          {
-            pluginMessage: {
-              type: "selected-image",
-              obj,
-              response,
-              i
-            }
-          },
-          "*"
-        );
-      };
-      xmlHTTP.send();
-    });
-  }
-
-  const createImgButton = (item, obj) => {
-    let button = document.createElement("button");
-    button.innerHTML = item;
-    imageActions.appendChild(button);
-
-    button.onclick = (e) => {
-      let buttonName = e.target.innerHTML;
-      let newObj = obj;
-
-      if (randomCheckbox.checked) {
-        oldObj = [...obj];
-        newObj = shuffle(oldObj);
-        getDataArr(newObj, item);
-      } else {
-        getDataArr(newObj, item);
-      }
-    };
-  };
-
   const mapToButtons = (obj) => {
     // map keys inside tthe first array item
     Object.keys(obj[0]).map((item, i) => {
       let val = obj[0][item];
-      if (val.toUpperCase().startsWith("HTTPS")) {
-        actionAreaImage.style.display = "inline-block";
-        createImgButton(item, obj);
-      } else {
-        actionAreaString.style.display = "inline-block";
-        createStringButton(item, obj);
-      }
+      actionAreaString.style.display = "inline-block";
+      createStringButton(item, obj);
     });
   };
 
