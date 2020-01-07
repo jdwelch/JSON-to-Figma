@@ -9,11 +9,11 @@ const fillTextNodes = (selection, obj, name) => {
     });
 };
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 280, height: 320 });
+figma.showUI(__html__, { width: 280, height: 620 });
 figma.ui.onmessage = (msg) => {
     if (msg.type === "change-size") {
         // console.log(msg.obj);
-        figma.ui.resize(280, 540);
+        figma.ui.resize(280, 640);
     }
     if (msg.type === "selected-text") {
         // console.log(msg.obj);
