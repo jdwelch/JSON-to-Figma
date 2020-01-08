@@ -43,8 +43,23 @@
     <h2>Find and populate</h2>
     <div>
       <div>
-        <input type="checkbox" id="random-paste" />
-        <label for="random-paste">Find by string templates</label>
+        <input
+          type="radio"
+          checked
+          name="populate-mode"
+          id="only-selected-chk"
+        />
+        <label for="only-selected-chk">Only selected layers</label>
+      </div>
+      <p>
+        You can populate layers deeply nested in a group. To do so, manualy
+        rename a layer you want to populate
+      </p>
+    </div>
+    <div>
+      <div>
+        <input type="radio" name="populate-mode" id="string-template-chk" />
+        <label for="string-template-chk">Find by string templates</label>
       </div>
       <p>
         You can populate layers deeply nested in a group. To do so, manualy
@@ -54,8 +69,8 @@
     </div>
     <div>
       <div>
-        <input type="checkbox" id="random-paste" />
-        <label for="random-paste">Find by layer name</label>
+        <input type="radio" name="populate-mode" id="layer-name-chk" />
+        <label for="layer-name-chk">Find by layer name</label>
       </div>
       <p>
         You can populate layers deeply nested in a group. To do so, manualy
@@ -68,8 +83,8 @@
   <section class="section" id="random-area">
     <hr class="divider" />
     <div>
-      <input type="checkbox" id="random-paste" />
-      <label for="random-paste">Random order</label>
+      <input type="checkbox" id="random-paste-chk" />
+      <label for="random-paste-chk">Random order</label>
     </div>
     <p>
       All selected items will be filled in a random order.
@@ -235,7 +250,7 @@
   const stringActions = document.getElementById("string-actions");
   //
   const randomArea = document.getElementById("random-area");
-  const randomCheckbox = document.getElementById("random-paste");
+  const randomCheckbox = document.getElementById("random-paste-chk");
   //
   const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
   const uploadIcon = document.getElementById("upload-icon");
