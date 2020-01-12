@@ -30,65 +30,66 @@
       <a href="#" target="_blank">certain structure</a> to be readable.
     </p>
   </div>
-  <!-- ACTIONS AREA -->
-  <section class="section" id="actions-area">
-    <div class="sub-section" id="actions-area-string">
-      <h2>String items</h2>
-      <div id="string-actions"></div>
-    </div>
-  </section>
-  <!-- FIND IN SECTIONS AREA -->
-  <section class="section">
-    <hr class="divider" />
-    <h2>Find and populate</h2>
-    <div>
+  <!-- HIDDEN AREA -->
+  <section id="hidden-area">
+    <!-- ACTIONS AREA -->
+    <section class="section" id="actions-area">
+      <div class="sub-section" id="actions-area-string">
+        <h2>String items</h2>
+        <div id="string-actions"></div>
+      </div>
+    </section>
+    <!-- FIND IN SECTIONS AREA -->
+    <section class="section">
+      <hr class="divider" />
+      <h2>Find and populate</h2>
       <div>
-        <input
-          type="radio"
-          checked
-          name="populate-mode"
-          id="only-selected-chk"
-        />
-        <label for="only-selected-chk">Only selected layers</label>
+        <div>
+          <input
+            type="radio"
+            checked
+            name="populate-mode"
+            id="only-selected-chk"
+          />
+          <label for="only-selected-chk">Only selected layers</label>
+        </div>
+        <p>
+          You can populate layers deeply nested in a group. To do so, manualy
+          rename a layer you want to populate
+        </p>
+      </div>
+      <div>
+        <div>
+          <input type="radio" name="populate-mode" id="string-template-chk" />
+          <label for="string-template-chk">Find by string templates</label>
+        </div>
+        <p>
+          You can populate layers deeply nested in a group. To do so, manualy
+          rename a layer you want to populate.
+        </p>
+      </div>
+      <div>
+        <div>
+          <input type="radio" name="populate-mode" id="layer-name-chk" />
+          <label for="layer-name-chk">Find by layer name</label>
+        </div>
+        <p>
+          You can populate layers deeply nested in a group. To do so, manualy
+          rename a layer you want to populate.
+        </p>
+      </div>
+    </section>
+    <!-- RANDOM AREA -->
+    <section class="section" id="random-area">
+      <hr class="divider" />
+      <div>
+        <input type="checkbox" id="random-paste-chk" />
+        <label for="random-paste-chk">Random order</label>
       </div>
       <p>
-        You can populate layers deeply nested in a group. To do so, manualy
-        rename a layer you want to populate
+        All selected items will be filled in a random order.
       </p>
-    </div>
-    <div>
-      <div>
-        <input type="radio" name="populate-mode" id="string-template-chk" />
-        <label for="string-template-chk">Find by string templates</label>
-      </div>
-      <p>
-        You can populate layers deeply nested in a group. To do so, manualy
-        rename a layer you want to populate — the name of the layer and key in
-        the JSON file must match.
-      </p>
-    </div>
-    <div>
-      <div>
-        <input type="radio" name="populate-mode" id="layer-name-chk" />
-        <label for="layer-name-chk">Find by layer name</label>
-      </div>
-      <p>
-        You can populate layers deeply nested in a group. To do so, manualy
-        rename a layer you want to populate — the name of the layer and key in
-        the JSON file must match.
-      </p>
-    </div>
-  </section>
-  <!-- RANDOM AREA -->
-  <section class="section" id="random-area">
-    <hr class="divider" />
-    <div>
-      <input type="checkbox" id="random-paste-chk" />
-      <label for="random-paste-chk">Random order</label>
-    </div>
-    <p>
-      All selected items will be filled in a random order.
-    </p>
+    </section>
   </section>
 </main>
 
@@ -229,10 +230,7 @@
     color: rgba(0, 0, 0, 0.6);
   }
   /*  */
-  #actions-area {
-    display: none;
-  }
-  #random-area {
+  #hidden-area {
     display: none;
   }
 </style>
@@ -244,9 +242,9 @@
   const dropAreaInfo = document.getElementById("drop-area-info");
   const fileInput = document.getElementById("file-input");
   //
+  const hiddenArea = document.getElementById("hidden-area");
   const actionArea = document.getElementById("actions-area");
   const actionAreaString = document.getElementById("actions-area-string");
-  const actionAreaImage = document.getElementById("actions-area-image");
   const stringActions = document.getElementById("string-actions");
   //
   const randomArea = document.getElementById("random-area");
@@ -254,6 +252,10 @@
   //
   const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
   const uploadIcon = document.getElementById("upload-icon");
+  //
+  // const selectCheckbox = document.getElementById("only-selected-chk");
+  const stringTemplateCheckbox = document.getElementById("string-template-chk");
+  const byLayerNameCheckbox = document.getElementById("layer-name-chk");
 
   ////////////////////////////////
 
@@ -277,9 +279,7 @@
   };
 
   const clearTheData = () => {
-    actionArea.style.display = "none";
-    actionAreaString.style.display = "none";
-    randomArea.style.display = "none";
+    hiddenArea.style.display = "none";
     dropAreaInfo.style.display = "inline-block";
     stringActions.textContent = "";
   };
@@ -312,13 +312,12 @@
     clearTheData();
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
-      actionArea.style.display = "inline-block";
-      randomArea.style.display = "inline-block";
+      hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
       mapToButtons(obj);
       parent.postMessage({ pluginMessage: { type: "change-size" } }, "*");
     } else {
-      console.log(false);
+      alert("Seems like is something wrong with your JSON file");
     }
   };
 
@@ -351,14 +350,20 @@
     stringActions.appendChild(button);
     button.onclick = (e) => {
       let buttonName = e.target.innerHTML;
-      let newObj = obj;
+      let newObj = !randomCheckbox.checked ? obj : shuffle(obj);
 
-      if (randomCheckbox.checked) {
-        oldObj = [...obj];
-        newObj = shuffle(oldObj);
-
+      if (stringTemplateCheckbox.checked) {
         parent.postMessage(
-          { pluginMessage: { type: "selected-text", newObj, buttonName } },
+          {
+            pluginMessage: { type: "string-template-text", newObj, buttonName }
+          },
+          "*"
+        );
+      } else if (byLayerNameCheckbox.checked) {
+        parent.postMessage(
+          {
+            pluginMessage: { type: "by-layer-name-text", newObj, buttonName }
+          },
           "*"
         );
       } else {
