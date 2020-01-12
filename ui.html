@@ -20,6 +20,7 @@
       </div>
 
       <div id="drop-area-uploaded">
+        <div><span id="file-name">file</span></div>
         <button id="reset-file-button">clear</button>
       </div>
     </div>
@@ -241,6 +242,7 @@
   const dropArea = document.getElementById("drop-area");
   const dropAreaInfo = document.getElementById("drop-area-info");
   const fileInput = document.getElementById("file-input");
+  const fileName = document.getElementById("file-name");
   //
   const hiddenArea = document.getElementById("hidden-area");
   const actionArea = document.getElementById("actions-area");
@@ -251,6 +253,7 @@
   const randomCheckbox = document.getElementById("random-paste-chk");
   //
   const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
+  const dropAreaUploaded = document.getElementById("drop-area-uploaded");
   const uploadIcon = document.getElementById("upload-icon");
   //
   // const selectCheckbox = document.getElementById("only-selected-chk");
@@ -312,6 +315,10 @@
     clearTheData();
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
+      dropAreaNotUploaded.style.display = "none";
+      dropAreaUploaded.style.display = "inline-block";
+      fileName.innerHTML = fileInput.files[0].name;
+
       hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
       mapToButtons(obj);

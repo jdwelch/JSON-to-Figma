@@ -22,18 +22,47 @@ figma.ui.onmessage = (msg) => {
             fillTextNodes(figma.currentPage.selection, msg.newObj, msg.buttonName);
         }
         else if (msg.type === "string-template-text") {
-            console.log(figma.currentPage.selection);
+            let newItem = 0;
+            function getAllId(arr, btnName, JSONobj, key) {
+                arr.map((item) => {
+                    for (let keys in item) {
+                        if (typeof item[key] !== "undefined" &&
+                            item[key].includes(`{${btnName}}`)) {
+                            if (keys === key) {
+                                figma.loadFontAsync(item.fontName).then(() => {
+                                    item.characters = item.characters.replace(`{${btnName}}`, JSONobj[newItem][btnName]);
+                                    newItem = ++newItem;
+                                });
+                            }
+                        }
+                        else if (Array.isArray(item[keys])) {
+                            getAllId(item[keys], btnName, JSONobj, key);
+                        }
+                    }
+                });
+            }
+            getAllId(figma.currentPage.selection, msg.buttonName, msg.newObj, "characters");
         }
         else if (msg.type === "by-layer-name-text") {
-            const allNodesWithChildren = figma.currentPage.selection.filter((item) => {
-                if (item["children"]) {
-                    return item["children"];
-                }
-            });
-            const allSubling = allNodesWithChildren.map((item) => {
-                return item;
-            });
-            console.log(allSubling);
+            let newItem = 0;
+            function getAllLayers(arr, btnName, JSONobj, key) {
+                arr.map((item) => {
+                    for (let keys in item) {
+                        if (item["name"] === btnName) {
+                            if (keys === key) {
+                                figma.loadFontAsync(item.fontName).then(() => {
+                                    item.characters = JSONobj[newItem][btnName];
+                                    newItem = ++newItem;
+                                });
+                            }
+                        }
+                        else if (Array.isArray(item[keys])) {
+                            getAllLayers(item[keys], btnName, JSONobj, key);
+                        }
+                    }
+                });
+            }
+            getAllLayers(figma.currentPage.selection, msg.buttonName, msg.newObj, "characters");
         }
     }
 };
