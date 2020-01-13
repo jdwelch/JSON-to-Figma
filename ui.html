@@ -1,7 +1,7 @@
 <!-- DROP AREA -->
 <main class="wrapper">
   <div id="drop-area">
-    <div style="margin: auto;">
+    <div style="margin: auto; width: 100%;">
       <div id="upload-icon">
         <svg fill="none" viewBox="0 0 17 21">
           <path
@@ -12,7 +12,7 @@
       </div>
 
       <div id="drop-area-not-uploaded">
-        <span>Drag & Drop your JSON</span>
+        <span class="body-text">Drag & Drop your JSON</span>
         <label class="btn btn-primary">
           <input id="file-input" type="file" multiple />
           Upload
@@ -20,8 +20,22 @@
       </div>
 
       <div id="drop-area-uploaded">
-        <div><span id="file-name">file</span></div>
-        <button id="reset-file-button">clear</button>
+        <div id="file-name-wrap">
+          <svg
+            style="width: 16px; height: 20px;"
+            fill="none"
+            viewBox="0 0 16 20"
+          >
+            <path
+              fill="#1BC47D"
+              stroke="#1BC47D"
+              d="M.5.5h10.777L15.5 5.192V19.5H.5V.5z"
+            />
+            <path stroke="#fff" d="M4.198 9.91l2.72 2.72 4.693-4.694" />
+          </svg>
+          <span class="body-text" id="file-name">file</span>
+        </div>
+        <button class="btn btn-secondary" id="reset-file-button">Reset</button>
       </div>
     </div>
   </div>
@@ -104,6 +118,12 @@
     display: flex;
     flex-direction: column;
   }
+  .body-text {
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: normal;
+    font-size: 11px;
+  }
   .btn {
     display: inline-block;
     flex-shrink: 0;
@@ -112,16 +132,16 @@
     border: 2px solid transparent;
     border-radius: 6px;
     outline: none;
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: normal;
+    font-size: 11px;
+    letter-spacing: 0.01em;
   }
   /*  */
   .btn-primary {
     color: #ffffff;
     background-color: #18a0fb;
-    font-family: "Inter", sans-serif;
-    line-height: 16px;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.01em;
     transition: background-color 0.12s ease;
   }
   .btn-primary:hover {
@@ -132,11 +152,6 @@
     color: rgba(0, 0, 0, 0.8);
     background-color: transparent;
     border: 1px solid rgba(0, 0, 0, 0.8);
-    font-family: "Inter", sans-serif;
-    line-height: 16px;
-    font-weight: 500;
-    font-size: 11px;
-    letter-spacing: 0.01em;
     transition: all 0.12s ease;
   }
   .btn-secondary:hover {
@@ -184,7 +199,7 @@
     overflow: hidden;
     position: relative;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 32px;
     min-height: 140px;
     margin: -8px -16px 0;
     background-color: #f3f3f3;
@@ -195,6 +210,10 @@
   }
   #drop-area.highlight {
     background-color: #e7f4fc;
+  }
+  #drop-area.uploaded {
+    background-color: #f3faf7;
+    min-height: auto;
   }
   /*  */
   #drop-area-not-uploaded {
@@ -207,10 +226,6 @@
     display: none;
   }
   #drop-area-not-uploaded > span {
-    font-family: "Inter", sans-serif;
-    font-weight: normal;
-    font-size: 11px;
-    line-height: 16px;
     color: rgba(0, 0, 0, 0.8);
     margin-bottom: 12px;
   }
@@ -219,8 +234,19 @@
     opacity: 0;
   }
   /*  */
+  #file-name-wrap {
+    display: flex;
+    align-items: center;
+  }
+  #file-name {
+    color: rgba(0, 0, 0, 0.8);
+    margin-left: 10px;
+  }
+  /*  */
   #drop-area-uploaded {
     display: none;
+    width: 100%;
+    justify-content: space-between;
   }
   /*  */
   #drop-area-info {
@@ -319,7 +345,8 @@
     var obj = JSON.parse(e.target.result);
     if (IsJsonString(e.target.result)) {
       dropAreaNotUploaded.style.display = "none";
-      dropAreaUploaded.style.display = "inline-block";
+      dropAreaUploaded.style.display = "flex";
+      dropArea.classList.add("uploaded");
       fileName.innerHTML = fileInput.files[0].name;
 
       hiddenArea.style.display = "inline-block";
