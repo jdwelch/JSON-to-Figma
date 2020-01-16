@@ -40,7 +40,7 @@
     </div>
   </div>
   <div id="drop-area-info">
-    <p>
+    <p class="caption-text" style="margin-bottom: 8px">
       Your JSON file should have a
       <a href="#" target="_blank">certain structure</a> to be readable.
     </p>
@@ -49,62 +49,66 @@
   <section id="hidden-area">
     <!-- ACTIONS AREA -->
     <section class="section" id="actions-area">
-      <div class="sub-section" id="actions-area-string">
-        <h2>String items</h2>
+      <div id="actions-area-string">
+        <h2 class="small-header-text">String items</h2>
         <div id="string-actions"></div>
       </div>
     </section>
     <!-- FIND IN SECTIONS AREA -->
-    <section class="section">
-      <hr class="divider" />
-      <h2>Find and populate</h2>
+    <section class="section" id="options-area">
+      <h2 class="small-header-text">Find and populate</h2>
 
-      <div>
-        <div>
+      <section class="sub-section">
+        <div class="radio-btn">
           <input
             type="radio"
             checked
             name="populate-mode"
             id="only-selected-chk"
           />
-          <label for="only-selected-chk">Only selected layers</label>
+          <label for="only-selected-chk" class="body-text"
+            >Only selected layers</label
+          >
         </div>
-        <p>
+        <p class="caption-text">
           You can populate layers deeply nested in a group. To do so, manualy
           rename a layer you want to populate
         </p>
-      </div>
+      </section class="sub-section">
 
-      <div>
-        <div>
+      <section class="sub-section">
+        <div class="radio-btn">
           <input type="radio" name="populate-mode" id="layer-name-chk" />
-          <label for="layer-name-chk">Find by layer name</label>
+          <label for="layer-name-chk" class="body-text"
+            >Find by layer name</label
+          >
         </div>
-        <p>
+        <p class="caption-text">
           You can populate layers deeply nested in a group. To do so, manualy
           rename a layer you want to populate.
         </p>
-      </div>
+      </section>
 
-      <div>
-        <div>
+      <section>
+        <div class="radio-btn">
           <input type="radio" name="populate-mode" id="string-template-chk" />
-          <label for="string-template-chk">Find by string templates</label>
+          <label for="string-template-chk" class="body-text"
+            >Find by string templates</label
+          >
         </div>
-        <p>
+        <p class="caption-text">
           You can populate layers deeply nested in a group. To do so, manualy
           rename a layer you want to populate.
         </p>
-      </div>
+      </section>
     </section>
     <!-- RANDOM AREA -->
     <section class="section" id="random-area">
-      <hr class="divider" />
-      <div>
+      <div class="checkbox-btn">
         <input type="checkbox" id="random-paste-chk" />
-        <label for="random-paste-chk">Random order</label>
+        <label for="random-paste-chk" class="body-text">Random order</label>
       </div>
-      <p>
+      <p class="caption-text">
         All selected items will be filled in a random order.
       </p>
     </section>
@@ -113,8 +117,17 @@
 
 <!-- STYLES -->
 <style>
-  .wrapper {
+  html {
     box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    display: none;
+  }
+  .wrapper {
     display: flex;
     flex-direction: column;
   }
@@ -123,6 +136,20 @@
     line-height: 16px;
     font-weight: normal;
     font-size: 11px;
+  }
+  .caption-text {
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-weight: normal;
+    font-size: 11px;
+    opacity: 0.5;
+  }
+  .small-header-text {
+    font-family: "Inter", sans-serif;
+    line-height: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0 0 16px;
   }
   .btn {
     display: inline-block;
@@ -137,6 +164,75 @@
     font-weight: normal;
     font-size: 11px;
     letter-spacing: 0.01em;
+  }
+  /* RADIO */
+  .radio-btn label {
+    padding-left: 22px;
+    display: inline-block;
+    position: relative;
+    line-height: 1.3;
+  }
+  .radio-btn input[type="radio"] + label:before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #fff;
+    border-radius: 50px;
+  }
+  .radio-btn input[type="radio"]:checked + label:after {
+    content: "";
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #01385f;
+    position: absolute;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+  }
+  /* CHECKBOX */
+  .checkbox-btn label {
+    padding-left: 34px;
+    line-height: 1.3;
+    display: inline-block;
+    position: relative;
+  }
+  .checkbox-btn input[type="checkbox"] + label:before {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #fff;
+    border-radius: 50px;
+    transition: all 0.16s;
+  }
+  .checkbox-btn input[type="checkbox"] + label:after {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    background: #fff;
+    border-radius: 50px;
+    transition: all 0.16s;
+  }
+  .checkbox-btn input[type="checkbox"]:checked + label:before {
+    background: #000;
+  }
+  .checkbox-btn input[type="checkbox"]:checked + label:after {
+    left: 12px;
   }
   /*  */
   .btn-primary {
@@ -162,10 +258,14 @@
   .divider {
     margin: 0 -16px;
   }
+  /*  */
   .section {
     user-select: none;
-    margin: 8px;
-    box-sizing: border-box;
+    padding: 20px 8px 16px;
+  }
+  .sub-section {
+    user-select: none;
+    margin: 0 0 24px;
   }
   /*  */
   #upload-icon {
@@ -179,7 +279,6 @@
     pointer-events: none;
     transform: translate(-50%, calc(-50% + 0px)) scale(0);
     transform-origin: center bottom;
-    /* opacity: 0; */
     transition: all 0.2s ease;
   }
   #upload-icon svg {
@@ -198,7 +297,6 @@
   #drop-area {
     overflow: hidden;
     position: relative;
-    box-sizing: border-box;
     padding: 32px;
     min-height: 140px;
     margin: -8px -16px 0;
@@ -207,6 +305,7 @@
     flex-direction: column;
     align-items: center;
     transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
   #drop-area.highlight {
     background-color: #e7f4fc;
@@ -253,11 +352,13 @@
     font-family: "Inter", sans-serif;
     padding: 0 8px;
   }
-  #drop-area-info p {
-    font-weight: normal;
-    font-size: 11px;
-    line-height: 16px;
-    color: rgba(0, 0, 0, 0.6);
+  /*  */
+  #options-area {
+    margin: 0 -8px;
+    padding: 16px 16px 16px;
+    background: #f9f9f9;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
   /*  */
   #hidden-area {
@@ -292,6 +393,16 @@
   ////////////////////////////////
 
   // Util functions
+  const getElementsHeight = (el) => {
+    const arr = document.querySelector(el).children
+    for (var item of arr) {
+      console.log(item.getBoundingClientRect().height)
+    }
+    // arr.map(item => {
+    //   return item.getBoundingClientRect().height
+    // })
+  }
+
   const IsJsonString = (str) => {
     try {
       let json = JSON.parse(str);
@@ -352,6 +463,7 @@
       hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
       mapToButtons(obj);
+      getElementsHeight(".wrapper")
       parent.postMessage({ pluginMessage: { type: "change-size" } }, "*");
     } else {
       alert("Seems like is something wrong with your JSON file");
@@ -413,7 +525,7 @@
   };
 
   const mapToButtons = (obj) => {
-    // map keys inside tthe first array item
+    // map keys inside the first array item
     Object.keys(obj[0]).map((item, i) => {
       let val = obj[0][item];
       actionAreaString.style.display = "inline-block";
