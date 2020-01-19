@@ -103,12 +103,12 @@
       </section>
     </section>
     <!-- RANDOM AREA -->
-    <section class="section" id="random-area">
+    <section class="section" id="random-area" style="padding-bottom: 0">
       <div class="checkbox-btn">
         <input type="checkbox" id="random-paste-chk" />
         <label for="random-paste-chk" class="body-text">Random order</label>
       </div>
-      <p class="caption-text">
+      <p class="caption-text" style="margin-bottom: 0">
         All selected items will be filled in a random order.
       </p>
     </section>
@@ -121,7 +121,11 @@
     box-sizing: border-box;
   }
   *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: border-box;
+  }
+  body {
+    overflow-x: hidden;
+    user-select: none;
   }
   input[type="checkbox"],
   input[type="radio"] {
@@ -395,12 +399,11 @@
   // Util functions
   const getElementsHeight = (el) => {
     const arr = document.querySelector(el).children
+    let allElemettsHeight = 0
     for (var item of arr) {
-      console.log(item.getBoundingClientRect().height)
+      allElemettsHeight = allElemettsHeight + item.getBoundingClientRect().height
     }
-    // arr.map(item => {
-    //   return item.getBoundingClientRect().height
-    // })
+    return allElemettsHeight
   }
 
   const IsJsonString = (str) => {
@@ -463,8 +466,8 @@
       hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
       mapToButtons(obj);
-      getElementsHeight(".wrapper")
-      parent.postMessage({ pluginMessage: { type: "change-size" } }, "*");
+      let allElementsHeight = getElementsHeight(".wrapper")
+      parent.postMessage({ pluginMessage: { type: "change-size", allElementsHeight } }, "*");
     } else {
       alert("Seems like is something wrong with your JSON file");
     }
@@ -547,6 +550,13 @@
 
   document.getElementById("reset-file-button").onclick = () => {
     fileInput.value = "";
+    dropAreaNotUploaded.style.display = "flex";
+    dropAreaUploaded.style.display = "none";
+    dropArea.classList.remove("uploaded");
     clearTheData();
+    parent.postMessage(
+      { pluginMessage: { type: "reset" } },
+      "*"
+    );
   };
 </script>

@@ -4,20 +4,31 @@ const fillTextNodes = (selection, obj, name) => {
       figma.loadFontAsync(item.fontName).then(() => {
         item.characters = obj[i][name];
       });
-      console.log(`text for the node "${item.name}" changed`);
     }
   });
 };
 
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 280, height: 820 });
+figma.showUI(__html__, { width: 280, height: 204 });
 
 figma.ui.onmessage = (msg) => {
   if (msg.type === "change-size") {
-    figma.ui.resize(280, 820);
+    if (msg.allElementsHeight < 700) {
+      figma.ui.resize(280, msg.allElementsHeight + 20);
+    } else {
+      figma.ui.resize(280, 700);
+    }
   }
 
-  if (figma.currentPage.selection.length <= 0 && msg.type !== "change-size") {
+  if (msg.type === "reset") {
+    figma.ui.resize(280, 204);
+  }
+
+  if (
+    figma.currentPage.selection.length <= 0 &&
+    msg.type !== "change-size" &&
+    msg.type !== "reset"
+  ) {
     alert("Please select layers");
   } else {
     if (msg.type === "selected-text") {
