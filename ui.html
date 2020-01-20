@@ -2,20 +2,11 @@
 <main class="wrapper">
   <div id="drop-area">
     <div style="margin: auto; width: 100%;">
-      <div id="upload-icon">
-        <svg fill="none" viewBox="0 0 17 21">
-          <path
-            fill="#fff"
-            d="M8.414.362l8.215 8.215-.707.708-7.008-7.009v17.827h-1V2.276L.905 9.285l-.707-.708L8.414.362z"
-          />
-        </svg>
-      </div>
 
       <div id="drop-area-not-uploaded">
-        <span class="body-text">Drag & Drop your JSON</span>
         <label class="btn btn-primary">
           <input id="file-input" type="file" multiple />
-          Upload
+          Upload JSON file
         </label>
       </div>
 
@@ -42,7 +33,7 @@
   <div id="drop-area-info">
     <p class="caption-text" style="margin-bottom: 8px">
       Your JSON file should have a
-      <a href="#" target="_blank">certain structure</a> to be readable.
+      <span id="show-file-structure">certain structure</span> to be readable.
     </p>
   </div>
   <!-- HIDDEN AREA -->
@@ -146,7 +137,7 @@
     line-height: 16px;
     font-weight: normal;
     font-size: 11px;
-    opacity: 0.5;
+    color:rgba(0, 0, 0, 0.5)
   }
   .small-header-text {
     font-family: "Inter", sans-serif;
@@ -272,6 +263,11 @@
     margin: 0 0 24px;
   }
   /*  */
+  #show-file-structure {
+    color: black;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
   #upload-icon {
     position: absolute;
     background-color: #18a0fb;
@@ -344,6 +340,7 @@
   #file-name {
     color: rgba(0, 0, 0, 0.8);
     margin-left: 10px;
+    margin-right: 20px;
   }
   /*  */
   #drop-area-uploaded {
@@ -388,11 +385,11 @@
   //
   const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
   const dropAreaUploaded = document.getElementById("drop-area-uploaded");
-  const uploadIcon = document.getElementById("upload-icon");
   //
-  // const selectCheckbox = document.getElementById("only-selected-chk");
   const stringTemplateCheckbox = document.getElementById("string-template-chk");
   const byLayerNameCheckbox = document.getElementById("layer-name-chk");
+  //
+  const showFileStructure = document.getElementById("show-file-structure");
 
   ////////////////////////////////
 
@@ -430,66 +427,43 @@
     stringActions.textContent = "";
   };
 
+  const loadJSON = (obj) => {
+    fileName.innerHTML = fileInput.files[0].name;
+
+    dropAreaNotUploaded.style.display = "none";
+    dropAreaUploaded.style.display = "flex";
+    dropArea.classList.add("uploaded");
+    hiddenArea.style.display = "inline-block";
+    dropAreaInfo.style.display = "none";
+
+    mapToButtons(obj);
+
+    let allElementsHeight = getElementsHeight(".wrapper")
+    parent.postMessage({ pluginMessage: { type: "change-size", allElementsHeight } }, "*");
+  }
+
   ////////////////////////////////
-
-  // Drag&Drop functions
-  const highlight = (e) => {
-    dropArea.classList.add("highlight");
-    dropAreaNotUploaded.classList.add("highlight");
-    uploadIcon.classList.add("highlight");
-  };
-
-  const unhighlight = (e) => {
-    dropArea.classList.remove("highlight");
-    dropAreaNotUploaded.classList.remove("highlight");
-    uploadIcon.classList.remove("highlight");
-  };
-
-  const preventDefaults = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    fileInput.files = e.dataTransfer.files;
-  };
 
   const onReaderLoad = (e) => {
     clearTheData();
-    var obj = JSON.parse(e.target.result);
-    if (IsJsonString(e.target.result)) {
+    try {
+      const obj = JSON.parse(e.target.result)
+      fileName.innerHTML = fileInput.files[0].name;
+
       dropAreaNotUploaded.style.display = "none";
       dropAreaUploaded.style.display = "flex";
       dropArea.classList.add("uploaded");
-      fileName.innerHTML = fileInput.files[0].name;
-
       hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
+
       mapToButtons(obj);
+
       let allElementsHeight = getElementsHeight(".wrapper")
       parent.postMessage({ pluginMessage: { type: "change-size", allElementsHeight } }, "*");
-    } else {
-      alert("Seems like is something wrong with your JSON file");
+    } catch(error) {
+      alert("Seems like is something wrong with your JSON file. Please check it again");
     }
   };
-
-  // Listeners
-  dropArea.addEventListener("dragenter", highlight, false);
-  dropArea.addEventListener("dragover", highlight, false);
-  dropArea.addEventListener("dragleave", unhighlight, false);
-  dropArea.addEventListener("drop", handleDrop, false);
-
-  ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
-    dropArea.addEventListener(e, preventDefaults, false);
-  });
-
-  ["dragenter", "dragover"].forEach((e) => {
-    dropArea.addEventListener(e, highlight, false);
-  });
-
-  ["dragleave", "drop"].forEach((e) => {
-    dropArea.addEventListener(e, unhighlight, false);
-  });
 
   ////////////////////////////////
 
@@ -544,7 +518,12 @@
     reader.readAsText(e.target.files[0]);
   };
 
-  document.getElementById("file-input").addEventListener("change", onChange);
+  const onHover = (e) => {
+    console.log(e)
+  }
+
+  fileInput.addEventListener("change", onChange);
+  showFileStructure.addEventListener("onmousemove", onHover);
 
   ///////////////////////////////
 
