@@ -13,11 +13,7 @@ figma.showUI(__html__, { width: 280, height: 204 });
 
 figma.ui.onmessage = (msg) => {
   if (msg.type === "change-size") {
-    if (msg.allElementsHeight < 700) {
-      figma.ui.resize(280, msg.allElementsHeight + 20);
-    } else {
-      figma.ui.resize(280, 700);
-    }
+    figma.ui.resize(280, msg.allElementsHeight + 20);
   }
 
   if (msg.type === "reset") {
