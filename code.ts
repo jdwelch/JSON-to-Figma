@@ -1,6 +1,6 @@
 const fillTextNodes = (selection, obj, name) => {
   selection.map((item, i) => {
-    if (typeof obj[i] !== "undefined") {
+    if (typeof obj[i] !== 'undefined') {
       figma.loadFontAsync(item.fontName).then(() => {
         item.characters = obj[i][name];
       });
@@ -8,35 +8,41 @@ const fillTextNodes = (selection, obj, name) => {
   });
 };
 
-// This shows the HTML page in "ui.html".
-figma.showUI(__html__, { width: 280, height: 204 });
+const pluginInitialHeight = 208;
+const pluginInitialWidth = 280;
 
-figma.ui.onmessage = (msg) => {
-  if (msg.type === "change-size") {
+// This shows the HTML page in "ui.html".
+figma.showUI(__html__, {
+  width: pluginInitialWidth,
+  height: pluginInitialHeight
+});
+
+figma.ui.onmessage = msg => {
+  if (msg.type === 'change-size') {
     figma.ui.resize(280, msg.allElementsHeight + 20);
   }
 
-  if (msg.type === "reset") {
-    figma.ui.resize(280, 204);
+  if (msg.type === 'reset') {
+    figma.ui.resize(pluginInitialWidth, pluginInitialHeight);
   }
 
   if (
     figma.currentPage.selection.length <= 0 &&
-    msg.type !== "change-size" &&
-    msg.type !== "reset"
+    msg.type !== 'change-size' &&
+    msg.type !== 'reset'
   ) {
-    alert("Please select layers");
+    alert('Please select layers');
   } else {
-    if (msg.type === "selected-text") {
+    if (msg.type === 'selected-text') {
       fillTextNodes(figma.currentPage.selection, msg.newObj, msg.buttonName);
-    } else if (msg.type === "string-template-text") {
+    } else if (msg.type === 'string-template-text') {
       let newItem = 0;
 
       function getAllId(arr, btnName, JSONobj, key) {
-        arr.map((item) => {
+        arr.map(item => {
           for (let keys in item) {
             if (
-              typeof item[key] !== "undefined" &&
+              typeof item[key] !== 'undefined' &&
               item[key].includes(`{${btnName}}`)
             ) {
               if (keys === key) {
@@ -59,15 +65,15 @@ figma.ui.onmessage = (msg) => {
         figma.currentPage.selection,
         msg.buttonName,
         msg.newObj,
-        "characters"
+        'characters'
       );
-    } else if (msg.type === "by-layer-name-text") {
+    } else if (msg.type === 'by-layer-name-text') {
       let newItem = 0;
 
       function getAllLayers(arr, btnName, JSONobj, key) {
-        arr.map((item) => {
+        arr.map(item => {
           for (let keys in item) {
-            if (item["name"] === btnName) {
+            if (item['name'] === btnName) {
               if (keys === key) {
                 figma.loadFontAsync(item.fontName).then(() => {
                   item.characters = JSONobj[newItem][btnName];
@@ -85,7 +91,7 @@ figma.ui.onmessage = (msg) => {
         figma.currentPage.selection,
         msg.buttonName,
         msg.newObj,
-        "characters"
+        'characters'
       );
     }
   }
