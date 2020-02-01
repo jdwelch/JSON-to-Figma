@@ -488,7 +488,6 @@
     clearTheData();
     try {
       const obj = checkforNestedObj(JSON.parse(e.target.result))
-      console.log(obj)
       fileName.innerHTML = fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
