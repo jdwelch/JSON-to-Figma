@@ -4,9 +4,10 @@
     <div style="margin: auto; width: 100%;">
 
       <div id="drop-area-not-uploaded">
-        <label class="btn btn-primary">
+        <img id="logo" src="https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fplugin-image.svg" alt="logo-image">
+        <label class="btn btn-electric">
           <input id="file-input" type="file" multiple />
-          Upload JSON file
+          Seleect JSON file
         </label>
       </div>
 
@@ -30,6 +31,7 @@
       </div>
     </div>
   </div>
+  <!-- INFO -->
   <div id="drop-area-info">
     <p class="caption-text" style="margin-top: 16px; margin-bottom: 8px;">
       Your JSON file should have a
@@ -109,6 +111,26 @@
 
 <!-- STYLES -->
 <style>
+  :root {
+    /* Animation */
+    --default-transition: 0.1s ease;
+    --middle-transition: 0.2s ease;
+    /* Main colors */
+    --pink-clr: #FFCDCD;
+    --electro-blue-clr: #0038FF;
+    --main-clr: #18a0fb;
+    --main-dark-clr: #1290e4;
+    /* Neutral colors */
+    --n-white-clr: #fff;
+    --n-light-clr: #F9F9F9;
+    --n-semilight-clr: #DBDBDB;
+    --n-semidark-clr: #7C7C7C;
+    --n-dark-clr: #333;
+    --n-black-clr: #000;
+    /* State colors */
+    --success-light-clr: #F5FDF9;
+    --success-main-clr: #5CCF89;
+  }
   html {
     box-sizing: border-box;
   }
@@ -138,7 +160,7 @@
     line-height: 16px;
     font-weight: normal;
     font-size: 11px;
-    color:rgba(0, 0, 0, 0.5)
+    color: var(--n-semidark-clr);
   }
   .small-header-text {
     font-family: "Inter", sans-serif;
@@ -147,6 +169,7 @@
     font-weight: 600;
     margin: 0 0 16px;
   }
+  /* BUTTON */
   .btn {
     display: inline-block;
     flex-shrink: 0;
@@ -160,6 +183,28 @@
     font-weight: normal;
     font-size: 11px;
     letter-spacing: 0.01em;
+    transition: all var(--default-transition);
+  }
+  /*  */
+  .btn-electric {
+    color: var(--n-white-clr);
+    background-color: var(--electro-blue-clr);
+  }
+  .btn-primary {
+    color: var(--n-white-clr);
+    background-color: var(--main-clr);
+  }
+  .btn-primary:hover {
+    background-color: var(--main-dark-clr);
+  }
+  /*  */
+  .btn-secondary {
+    color: var(--n-dark-clr);
+    background-color: transparent;
+    border: 1px solid var(--n-dark-clr);
+  }
+  .btn-secondary:hover {
+    border: 1px solid var(--n-semidark-clr);
   }
   /* RADIO */
   .radio-btn label {
@@ -176,8 +221,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    background: #fff;
+    border: 1px solid var(--n-dark-clr);
+    background: var(--n-white-clr);;
     border-radius: 50px;
   }
   .radio-btn input[type="radio"]:checked + label:after {
@@ -185,7 +230,7 @@
     display: block;
     width: 6px;
     height: 6px;
-    background: #01385f;
+    background: var(--n-dark-clr);
     position: absolute;
     border-radius: 50%;
     top: 3px;
@@ -206,10 +251,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    background: #fff;
+    border: 1px solid var(--n-dark-clr);
+    background: var(--n-white-clr);
     border-radius: 50px;
-    transition: all 0.16s;
   }
   .checkbox-btn input[type="checkbox"] + label:after {
     content: "";
@@ -219,36 +263,15 @@
     position: absolute;
     top: 0;
     left: 0;
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    background: #fff;
+    border: 1px solid var(--n-dark-clr);
+    background: var(--n-white-clr);
     border-radius: 50px;
-    transition: all 0.16s;
   }
   .checkbox-btn input[type="checkbox"]:checked + label:before {
     background: #000;
   }
   .checkbox-btn input[type="checkbox"]:checked + label:after {
     left: 12px;
-  }
-  /*  */
-  .btn-primary {
-    color: #ffffff;
-    background-color: #18a0fb;
-    transition: background-color 0.12s ease;
-  }
-  .btn-primary:hover {
-    background-color: #1290e4;
-  }
-  /*  */
-  .btn-secondary {
-    color: rgba(0, 0, 0, 0.8);
-    background-color: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    transition: all 0.12s ease;
-  }
-  .btn-secondary:hover {
-    border: 1px solid rgba(0, 0, 0, 0.6);
-    background-color: rgba(0, 0, 0, 0.02);
   }
   /*  */
   .divider {
@@ -263,36 +286,14 @@
     user-select: none;
     margin: 0 0 24px;
   }
-  /*  */
+  /* ///////// */
+  #logo {
+    margin-bottom: 32px;
+  }
   #show-file-structure {
-    color: black;
+    color: var(--n-black-clr);
     text-decoration: underline;
     text-decoration-style: dotted;
-  }
-  #upload-icon {
-    position: absolute;
-    background-color: #18a0fb;
-    width: 48px;
-    height: 48px;
-    border-radius: 100px;
-    top: 50%;
-    left: 50%;
-    pointer-events: none;
-    transform: translate(-50%, calc(-50% + 0px)) scale(0);
-    transform-origin: center bottom;
-    transition: all 0.2s ease;
-  }
-  #upload-icon svg {
-    width: 16px;
-    height: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  #upload-icon.highlight {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
   }
   /*  */
   #drop-area {
@@ -301,32 +302,32 @@
     padding: 32px;
     min-height: 140px;
     margin: -8px -16px 0;
-    background-color: #f3f3f3;
+    background-color: var(--pink-clr);
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.2s ease;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
   #drop-area.highlight {
-    background-color: #e7f4fc;
+    background-color: var(--n-light-clr);
   }
   #drop-area.uploaded {
-    background-color: #f3faf7;
+    background-color: var(--success-light-clr);
     min-height: auto;
   }
   /*  */
   #drop-area-not-uploaded {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    transition: all 0.2s ease;
+    align-items: flex-start;
+    transition: all var(--middle-transition);
   }
   #drop-area-not-uploaded input[type="file"] {
     display: none;
   }
   #drop-area-not-uploaded > span {
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--n-dark-clr);
     margin-bottom: 12px;
   }
   #drop-area-not-uploaded.highlight {
@@ -339,7 +340,7 @@
     align-items: center;
   }
   #file-name {
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--n-dark-clr);
     margin-left: 10px;
     margin-right: 20px;
   }
@@ -365,9 +366,9 @@
   #options-area {
     margin: 0 -8px;
     padding: 16px 16px 16px;
-    background: #f9f9f9;
-    border-top: 1px solid rgba(0, 0, 0, 0.12);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    background: var(--n-light-clr);
+    border-top: 1px solid var(--n-semilight-clr);
+    border-bottom: 1px solid var(--n-semilight-clr);
   }
   /*  */
   #hidden-area {
