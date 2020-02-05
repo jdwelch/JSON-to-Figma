@@ -1,56 +1,47 @@
 [
   {
-    "name": "Josef 1",
+    "name": "Cecil Mccallum",
+    "job": "Operations",
+    "email": "cecil@mail.com"
+  },
+  {
+    "name": "Romy Brandt",
+    "job": "Lead of Engineering",
+    "email": "romy@mail.com"
+  },
+  {
+    "name": "Iona Cherry",
+    "job": "Developer",
+    "email": "iona@mail.com"
+  },
+  {
+    "name": "Robert Curran",
+    "job": "Partnership Management",
+    "email": "robert@mail.com"
+  },
+  {
+    "name": "Elias Bains",
     "job": "Software Engineering",
-    "birth": "1233",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber1.jpg"
+    "email": "elias@mail.com"
   },
   {
-    "name": "Alex 2",
-    "job": "Lead of Engineering",
-    "birth": "1928",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber2.jpg"
+    "name": "Jakob Peters",
+    "job": "Administration, Accounting & HR",
+    "email": "jakob@mail.com"
   },
   {
-    "name": "Tatiana 3",
-    "job": "Developer",
-    "birth": "2001",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber3.jpg"
+    "name": "Marlon Schmidt",
+    "job": "Sales",
+    "email": "marlon@mail.com"
   },
   {
-    "name": "Pavel 4",
-    "job": "Lead of Engineering",
-    "birth": "1928",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber4%20(1).jpg"
+    "name": "Frank Marks",
+    "job": "Business Development",
+    "email": "frank@mail.com"
   },
   {
-    "name": "Den 5",
-    "job": "Developer",
-    "birth": "2001",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber5.jpg"
-  },
-  {
-    "name": "Sveta 6",
-    "job": "Lead of Engineering",
-    "birth": "1928",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber6.jpg"
-  },
-  {
-    "name": "Dima 7",
-    "job": "Developer",
-    "birth": "2001",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber7.jpg"
-  },
-  {
-    "name": "Michal 8",
-    "job": "Lead of Engineering",
-    "birth": "1928",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber8.jpg"
-  },
-  {
-    "name": "Sonya 9",
-    "job": "Developer",
-    "birth": "2001",
-    "avatar": "https://cdn.glitch.com/604ccd24-6c39-4492-b5ee-72a22eb071c0%2Fnumber9.jpg"
+    "name": "Stephan Graves",
+    "job": "Technical Product Management",
+    "email": "stephan@mail.com"
   }
 ]
