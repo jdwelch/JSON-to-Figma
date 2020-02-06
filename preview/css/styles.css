@@ -11,7 +11,12 @@ body {
   font-family: "Archivo", sans-serif; }
 
 a {
-  color: #4200ff; }
+  color: #4200ff;
+  -webkit-transition: all 0.16s ease;
+  -o-transition: all 0.16s ease;
+  transition: all 0.16s ease; }
+  a:hover {
+    color: #ff7f76; }
 
 .wrap {
   max-width: 940px;
@@ -116,7 +121,19 @@ a {
   margin-bottom: 20px; }
   .btn_primary {
     color: white;
-    background: #0038ff; }
+    background: #0038ff;
+    -webkit-transition: all 0.16s ease;
+    -o-transition: all 0.16s ease;
+    transition: all 0.16s ease; }
+    .btn_primary:hover {
+      color: white;
+      background: #001e8a; }
   .btn_secondary {
     color: white;
-    border: 2px solid white; }
+    border: 2px solid white;
+    -webkit-transition: all 0.16s ease;
+    -o-transition: all 0.16s ease;
+    transition: all 0.16s ease; }
+    .btn_secondary:hover {
+      background: white;
+      color: #ff7f76; }

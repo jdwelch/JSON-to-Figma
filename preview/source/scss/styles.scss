@@ -3,7 +3,9 @@
 ////////// COLORS //////////
 ////////////////////////////
 $light-pink-clr: #ffd1ce;
+$pink-clr: #ff7f76;
 $main-blue-clr: #0038ff;
+$main-bluedark-clr: #001e8a;
 
 ////////// SIZES ///////////
 ////////////////////////////
@@ -35,6 +37,10 @@ body {
 
 a {
   color: #4200ff;
+  transition: all 0.16s ease;
+  &:hover {
+    color: $pink-clr;
+  }
 }
 
 ///////// SPECIFIC /////////
@@ -145,9 +151,19 @@ a {
   &_primary {
     color: white;
     background: $main-blue-clr;
+    transition: all 0.16s ease;
+    &:hover {
+      color: white;
+      background: $main-bluedark-clr;
+    }
   }
   &_secondary {
     color: white;
     border: 2px solid white;
+    transition: all 0.16s ease;
+    &:hover {
+      background: white;
+      color: $pink-clr;
+    }
   }
 }
