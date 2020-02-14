@@ -445,22 +445,8 @@
   ////////////////////////////////////////////
 
   const getElementsHeight = (el) => {
-    const arr = document.querySelector(el).children
-    let frameHeight = 0
-    for (var item of arr) {
-      frameHeight = frameHeight + item.getBoundingClientRect().height
-    }
-    return Math.round(frameHeight)
+    return Math.round(document.querySelector(el).getBoundingClientRect().height)
   }
-
-  const isJsonString = (str) => {
-    try {
-      let json = JSON.parse(str);
-      return typeof json === "object";
-    } catch (e) {
-      return false;
-    }
-  };
 
   const shuffle = (arr) => {
     const newArr = arr.slice();
@@ -506,21 +492,6 @@
   /////////////////////////////////////////////
   //////////// Load and read file /////////////
   /////////////////////////////////////////////
-
-  const loadJSON = (obj) => {
-    fileName.innerHTML = fileInput.files[0].name;
-
-    dropAreaNotUploaded.style.display = "none";
-    dropAreaUploaded.style.display = "flex";
-    dropArea.classList.add("uploaded");
-    hiddenArea.style.display = "inline-block";
-    dropAreaInfo.style.display = "none";
-
-    mapToButtons(obj);
-
-    let frameHeight = getElementsHeight(".wrapper")
-    parent.postMessage({ pluginMessage: { type: "change-size", frameHeight } }, "*");
-  }
 
   const onReaderLoad = (e) => {
     try {
