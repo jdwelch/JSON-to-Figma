@@ -471,7 +471,7 @@
     return newArr;
   };
 
-  const checkforNestedObj = (json) => {
+  const checkForNestedObj = (json) => {
     let newJSONArray = []
 
     json.map((JSONitem, g) => {
@@ -503,12 +503,6 @@
     return newJSONArray
   }
 
-  const clearTheData = () => {
-    hiddenArea.style.display = "none";
-    dropAreaInfo.style.display = "inline-block";
-    stringActions.textContent = "";
-  };
-
   /////////////////////////////////////////////
   //////////// Load and read file /////////////
   /////////////////////////////////////////////
@@ -529,9 +523,8 @@
   }
 
   const onReaderLoad = (e) => {
-    clearTheData();
     try {
-      const obj = checkforNestedObj(JSON.parse(e.target.result))
+      const obj = checkForNestedObj(JSON.parse(e.target.result))
       fileName.innerHTML = fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
@@ -636,9 +629,11 @@
     dropAreaNotUploaded.style.display = "flex";
     dropAreaUploaded.style.display = "none";
     fileStructureImage.style.display = "none";
-    isShowFileStructure = true
     dropArea.classList.remove("uploaded");
-    clearTheData();
+    hiddenArea.style.display = "none";
+    dropAreaInfo.style.display = "inline-block";
+    stringActions.textContent = "";
+    isShowFileStructure = true
     let frameHeight = getElementsHeight(".wrapper") - 12
     parent.postMessage(
       { pluginMessage: { type: "reset", frameHeight } },
