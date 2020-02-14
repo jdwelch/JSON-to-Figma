@@ -19,7 +19,7 @@ figma.showUI(__html__, {
 
 figma.ui.onmessage = msg => {
   if (msg.type === 'change-size' || msg.type === 'reset') {
-    figma.ui.resize(pluginInitialWidth, msg.frameHeight + 20);
+    figma.ui.resize(pluginInitialWidth, msg.frameHeight + 30);
   }
 
   if (
