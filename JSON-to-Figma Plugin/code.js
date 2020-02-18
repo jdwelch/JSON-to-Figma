@@ -1,3 +1,5 @@
+const pluginInitialHeight = 264;
+const pluginInitialWidth = 280;
 const fillTextNodes = (selection, obj, name) => {
     selection.map((item, i) => {
         if (typeof obj[i] !== 'undefined') {
@@ -7,8 +9,6 @@ const fillTextNodes = (selection, obj, name) => {
         }
     });
 };
-const pluginInitialHeight = 264;
-const pluginInitialWidth = 280;
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__, {
     width: pluginInitialWidth,
