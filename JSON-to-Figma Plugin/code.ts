@@ -5,7 +5,7 @@ const fillTextNodes = (selection, obj, name) => {
   selection.map((item, i) => {
     if (typeof obj[i] !== 'undefined') {
       figma.loadFontAsync(item.fontName).then(() => {
-        item.characters = obj[i][name];
+        item.characters = obj[i][name].toString();
       });
     }
   });
@@ -45,7 +45,7 @@ figma.ui.onmessage = msg => {
                 figma.loadFontAsync(item.fontName).then(() => {
                   item.characters = item.characters.replace(
                     `{${btnName}}`,
-                    JSONobj[newItem][btnName]
+                    JSONobj[newItem][btnName].toString()
                   );
                   newItem = ++newItem;
                 });
@@ -72,7 +72,7 @@ figma.ui.onmessage = msg => {
             if (item['name'] === btnName) {
               if (keys === key) {
                 figma.loadFontAsync(item.fontName).then(() => {
-                  item.characters = JSONobj[newItem][btnName];
+                  item.characters = JSONobj[newItem][btnName].toString();
                   newItem = ++newItem;
                 });
               }
