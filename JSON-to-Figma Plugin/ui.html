@@ -463,6 +463,7 @@
     json.map((JSONitem, g) => {
       let newSubObj = {}
       const firstArrayLevel = Object.values(JSONitem)
+      console.log(firstArrayLevel)
       firstArrayLevel.map((item, i) => {
         if (typeof item === "object") {
           const firstLevelObjectKeys = Object.keys(json[g])
@@ -482,6 +483,7 @@
           })
         } else {
           newSubObj[Object.keys(JSONitem)[i]] = item
+          
         }
       })
       newJSONArray.push(newSubObj)
@@ -495,7 +497,9 @@
 
   const onReaderLoad = (e) => {
     try {
-      const obj = checkForNestedObj(JSON.parse(e.target.result))
+      const stringJSON = e.target.result
+
+      const obj = checkForNestedObj(JSON.parse(stringJSON.replace(/(\s+)null/g, ' "null"')))
       fileName.innerHTML = fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
@@ -509,6 +513,7 @@
       let frameHeight = getElementsHeight(".wrapper")
       parent.postMessage({ pluginMessage: { type: "change-size", frameHeight } }, "*");
     } catch(error) {
+      console.error(error)
       alert("Seems like is something wrong with your JSON file. Please check it again");
     }
   };
