@@ -5,19 +5,20 @@
     <div style="margin: auto; width: 100%;">
       <div id="drop-area-not-uploaded">
         <label class="label-text" for="file-input">Local file:</label>
-        <label class="btn btn-secondary">
+        <label class="btn btn-primary">
           <input id="file-input" type="file" multiple />
           Select JSON file
         </label>
         <label class="label-text" for="read-url-input">URL:</label>
           <input id="read-url-input" type="text" />
-          <button class="btn btn-secondary" id="read-url-button">Read JSON from URL</button>
+          <button class="btn btn-primary" id="read-url-button">Read JSON from URL</button>
       </div>
 
       <div id="drop-area-uploaded">
         <div id="file-name-wrap">
-          <p class="label-text" id="file-name">file</p>
-          <button class="btn btn-secondary" id="reset-file-button" style="margin-top:8px">Reset</button>
+          <h2 class="small-header-text">Dataset</h2>
+          <p class="body-text" id="file-name">{file}</p>
+          <button class="btn btn-primary" id="reset-file-button" style="margin-top:8px">Reset</button>
         </div>
       </div>
     </div>
@@ -107,8 +108,6 @@
     --default-transition: 0.1s ease;
     --middle-transition: 0.2s ease;
     /* Main colors */
-    --pink-clr: #FFCDCD;
-    --electro-blue-clr: #0038FF;
     --main-clr: #18a0fb;
     --main-dark-clr: #1290e4;
     /* Neutral colors */
@@ -118,9 +117,6 @@
     --n-semidark-clr: #7C7C7C;
     --n-dark-clr: #333;
     --n-black-clr: #000;
-    /* State colors */
-    --success-light-clr: #F5FDF9;
-    --success-main-clr: #5CCF89;
   }
   html {
     box-sizing: border-box;
@@ -145,6 +141,7 @@
     border-radius: 4px;
     border-color: var(--n-dark-clr);
   }
+
   /* ///////////////////////////// */
   /*/////////// CLASSES ///////////*/
   /* ///////////////////////////// */
@@ -195,10 +192,6 @@
     transition: all var(--default-transition);
   }
   /*  */
-  .btn-electric {
-    color: var(--n-white-clr);
-    background-color: var(--electro-blue-clr);
-  }
   .btn-primary {
     color: var(--n-white-clr);
     background-color: var(--main-clr);
@@ -213,8 +206,8 @@
     border: 1px solid var(--n-dark-clr);
   }
   .btn-secondary:hover {
-    border: 1px solid var(--electro-blue-clr);
-    background-color: var(--electro-blue-clr);
+    border: 1px solid var(--n-dark-clr);
+    background-color: var(--n-dark-clr);
     color: var(--n-light-clr);
   }
   /* RADIO */
@@ -332,14 +325,14 @@
     padding: 24px;
     min-height: 140px;
     margin: -8px -16px 0;
-    background-color: var(--pink-clr);
+    background-color: var(--n-light-clr);
     display: flex;
     flex-direction: column;
     align-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
   #drop-area.uploaded {
-    background-color: var(--success-light-clr);
+    background-color: var(--n-light-clr);
     min-height: auto;
   }
   /*  */
@@ -357,30 +350,25 @@
     color: var(--n-dark-clr);
     margin-bottom: 12px;
   }
-  /*  */
   #file-name {
     color: var(--n-dark-clr);
   }
-  /*  */
   #drop-area-uploaded {
     display: none;
     width: 100%;
     justify-content: space-between;
     margin-bottom: 8px;
   }
-  /*  */
   #drop-area-info {
     font-family: "Inter", sans-serif;
     padding: 0 8px;
   }
-  /*  */
   #drop-area-info-image {
     display: none;
     width: 100%;
     height: 320px;
     margin-top: 8px;
   }
-  /*  */
   #options-area {
     margin: 0 -8px;
     padding: 16px 16px 16px;
@@ -388,7 +376,6 @@
     border-top: 1px solid var(--n-semilight-clr);
     border-bottom: 1px solid var(--n-semilight-clr);
   }
-  /*  */
   #hidden-area {
     display: none;
   }
@@ -474,7 +461,7 @@
       const stringJSON = e.target.result
 
       const obj = checkForNestedObj(JSON.parse(stringJSON.replace(/(\s+)null/g, ' "null"')))
-      fileName.innerHTML = "Using dataset: " + fileInput.files[0].name;
+      fileName.innerHTML = fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
       dropAreaUploaded.style.display = "flex";
@@ -504,7 +491,7 @@
     .then(data => {
       try {
         const obj = checkForNestedObj(data)
-        fileName.innerHTML = "Using dataset: " + url;
+        fileName.innerHTML = url;
         // FIXME: DRY this shiz up
         dropAreaNotUploaded.style.display = "none";
         dropAreaUploaded.style.display = "flex";
