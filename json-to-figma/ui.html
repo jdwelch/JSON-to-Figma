@@ -335,7 +335,7 @@
   #drop-area {
     overflow: hidden;
     position: relative;
-    padding: 32px 32px 24px;
+    padding: 32px;
     min-height: 140px;
     margin: -8px -16px 0;
     background-color: var(--pink-clr);
@@ -409,29 +409,22 @@
 <!-- SCRIPTS -->
 <script>
   // Variales
+  const actionAreaString = document.getElementById("actions-area-string");
+  const byLayerNameCheckbox = document.getElementById("layer-name-chk");
   const dropArea = document.getElementById("drop-area");
   const dropAreaInfo = document.getElementById("drop-area-info");
-  const fileInput = document.getElementById("file-input");
-  const fileName = document.getElementById("file-name");
-
-  const urlButton = document.getElementById("read-url-button");
-  const urlInput = document.getElementById("read-url-input");
-
-  //
-  const hiddenArea = document.getElementById("hidden-area");
-  const actionAreaString = document.getElementById("actions-area-string");
-  const stringActions = document.getElementById("string-actions");
-  //
-  const randomCheckbox = document.getElementById("random-paste-chk");
-  //
   const dropAreaNotUploaded = document.getElementById("drop-area-not-uploaded");
   const dropAreaUploaded = document.getElementById("drop-area-uploaded");
-  //
-  const stringTemplateCheckbox = document.getElementById("string-template-chk");
-  const byLayerNameCheckbox = document.getElementById("layer-name-chk");
-  //
-  const showFileStructure = document.getElementById("show-file-structure");
+  const fileInput = document.getElementById("file-input");
+  const fileName = document.getElementById("file-name");
   const fileStructureImage = document.getElementById("drop-area-info-image");
+  const hiddenArea = document.getElementById("hidden-area");
+  const randomCheckbox = document.getElementById("random-paste-chk");
+  const showFileStructure = document.getElementById("show-file-structure");
+  const stringActions = document.getElementById("string-actions");
+  const stringTemplateCheckbox = document.getElementById("string-template-chk");
+  const urlButton = document.getElementById("read-url-button");
+  const urlInput = document.getElementById("read-url-input");
 
   ////////////////////////////////////////////
   ////////////// Util functions //////////////
@@ -524,7 +517,7 @@
       try {
         const obj = checkForNestedObj(data)
         fileName.innerHTML = url;
-    
+        // FIXME: DRY
         dropAreaNotUploaded.style.display = "none";
         dropAreaUploaded.style.display = "flex";
         dropArea.classList.add("uploaded");
