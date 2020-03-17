@@ -1,4 +1,4 @@
-const pluginInitialHeight = 300;
+const pluginInitialHeight = 260;
 const pluginInitialWidth = 280;
 
 const fillTextNodes = (selection, obj, name) => {

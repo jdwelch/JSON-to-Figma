@@ -4,35 +4,20 @@
   <div id="drop-area">
     <div style="margin: auto; width: 100%;">
       <div id="drop-area-not-uploaded">
-        <label class="btn" for="file-input">Local file:</label>
-        <label class="btn btn-electric">
+        <label class="label-text" for="file-input">Local file:</label>
+        <label class="btn btn-secondary">
           <input id="file-input" type="file" multiple />
           Select JSON file
         </label>
-        <label class="btn" for="read-url-input">URL:</label>
+        <label class="label-text" for="read-url-input">URL:</label>
           <input id="read-url-input" type="text" />
-          <button class="btn btn-electric" id="read-url-button">Read JSON from URL</button>
+          <button class="btn btn-secondary" id="read-url-button">Read JSON from URL</button>
       </div>
 
       <div id="drop-area-uploaded">
-        <div>
         <div id="file-name-wrap">
-          <svg
-            style="width: 16px; height: 20px;"
-            fill="none"
-            viewBox="0 0 16 20"
-          >
-            <path
-              fill="#1BC47D"
-              stroke="#1BC47D"
-              d="M.5.5h10.777L15.5 5.192V19.5H.5V.5z"
-            />
-            <path stroke="#fff" d="M4.198 9.91l2.72 2.72 4.693-4.694" />
-          </svg>
-          <span class="body-text" id="file-name">file</span>
-        </div>
-        <!-- FIXME: Better layout spacing -->
-        <button class="btn btn-secondary" id="reset-file-button">Reset</button>
+          <p class="label-text" id="file-name">file</p>
+          <button class="btn btn-secondary" id="reset-file-button" style="margin-top:8px">Reset</button>
         </div>
       </div>
     </div>
@@ -152,12 +137,13 @@
     display: none;
   }
   input[type="text"] {
-    width: 200px;
-    font-size: 16px;
+    width: 100%;
+    font-size: 12px;
+    padding: 4px;
     margin-bottom: 4px;
-    border-width: 2px;
+    border-width: 1px;
     border-radius: 4px;
-    border-color: var(--electro-blue-clr);
+    border-color: var(--n-dark-clr);
   }
   /* ///////////////////////////// */
   /*/////////// CLASSES ///////////*/
@@ -185,6 +171,12 @@
     font-size: 11px;
     font-weight: 600;
     margin: 0 0 16px;
+  }
+  .label-text {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 8px 0;
   }
   /* BUTTON */
   .btn {
@@ -217,11 +209,13 @@
   /*  */
   .btn-secondary {
     color: var(--n-dark-clr);
-    background-color: transparent;
+    background-color: var(--n-light-clr);
     border: 1px solid var(--n-dark-clr);
   }
   .btn-secondary:hover {
-    border: 1px solid var(--n-semidark-clr);
+    border: 1px solid var(--electro-blue-clr);
+    background-color: var(--electro-blue-clr);
+    color: var(--n-light-clr);
   }
   /* RADIO */
   .radio-btn label {
@@ -335,7 +329,7 @@
   #drop-area {
     overflow: hidden;
     position: relative;
-    padding: 32px;
+    padding: 24px;
     min-height: 140px;
     margin: -8px -16px 0;
     background-color: var(--pink-clr);
@@ -364,14 +358,8 @@
     margin-bottom: 12px;
   }
   /*  */
-  #file-name-wrap {
-    display: flex;
-    align-items: flex-start;
-  }
   #file-name {
     color: var(--n-dark-clr);
-    margin-left: 10px;
-    margin-right: 20px;
   }
   /*  */
   #drop-area-uploaded {
@@ -486,7 +474,7 @@
       const stringJSON = e.target.result
 
       const obj = checkForNestedObj(JSON.parse(stringJSON.replace(/(\s+)null/g, ' "null"')))
-      fileName.innerHTML = fileInput.files[0].name;
+      fileName.innerHTML = "Using dataset: " + fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
       dropAreaUploaded.style.display = "flex";
@@ -516,8 +504,8 @@
     .then(data => {
       try {
         const obj = checkForNestedObj(data)
-        fileName.innerHTML = url;
-        // FIXME: DRY
+        fileName.innerHTML = "Using dataset: " + url;
+        // FIXME: DRY this shiz up
         dropAreaNotUploaded.style.display = "none";
         dropAreaUploaded.style.display = "flex";
         dropArea.classList.add("uploaded");
