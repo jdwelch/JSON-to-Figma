@@ -15,11 +15,9 @@
       </div>
 
       <div id="drop-area-uploaded">
-        <div id="file-name-wrap">
-          <h2 class="small-header-text">Dataset</h2>
-          <p class="body-text" id="file-name">{file}</p>
-          <button class="btn btn-primary" id="reset-file-button" style="margin-top:8px">Reset</button>
-        </div>
+        <h2 class="small-header-text">Dataset</h2>
+        <p class="body-text" id="file-name">{file}</p>
+        <button class="btn btn-primary" id="reset-file-button" style="margin-top:8px">Reset</button>
       </div>
     </div>
   </div>
@@ -331,11 +329,12 @@
     align-items: center;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
-  #drop-area.uploaded {
+  #drop-area-uploaded {
     background-color: var(--n-light-clr);
     min-height: auto;
+    display: none;
+    width: 100%;
   }
-  /*  */
   #drop-area-not-uploaded {
     width: 100%;
     display: flex;
@@ -352,12 +351,6 @@
   }
   #file-name {
     color: var(--n-dark-clr);
-  }
-  #drop-area-uploaded {
-    display: none;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 8px;
   }
   #drop-area-info {
     font-family: "Inter", sans-serif;
@@ -464,8 +457,7 @@
       fileName.innerHTML = fileInput.files[0].name;
 
       dropAreaNotUploaded.style.display = "none";
-      dropAreaUploaded.style.display = "flex";
-      dropArea.classList.add("uploaded");
+      dropAreaUploaded.style.display = "block";
       hiddenArea.style.display = "inline-block";
       dropAreaInfo.style.display = "none";
 
@@ -494,8 +486,7 @@
         fileName.innerHTML = url;
         // FIXME: DRY this shiz up
         dropAreaNotUploaded.style.display = "none";
-        dropAreaUploaded.style.display = "flex";
-        dropArea.classList.add("uploaded");
+        dropAreaUploaded.style.display = "block";
         hiddenArea.style.display = "inline-block";
         dropAreaInfo.style.display = "none";
     
