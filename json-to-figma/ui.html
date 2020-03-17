@@ -4,7 +4,6 @@
   <div id="drop-area">
     <div style="margin: auto; width: 100%;">
       <div id="drop-area-not-uploaded">
-
         <svg id="logo" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 175 81">
           <defs/>
           <path fill="#0038FF" d="M38.855 32.54c-2.37 0-4.545-.36-6.525-1.08-1.95-.75-3.51-1.845-4.68-3.285-1.17-1.44-1.755-3.18-1.755-5.22l.045-.99h6.615l-.045.72c0 1.32.585 2.37 1.755 3.15 1.17.78 2.805 1.17 4.905 1.17 2.22 0 3.825-.285 4.815-.855.99-.6 1.485-1.395 1.485-2.385 0-.87-.33-1.59-.99-2.16-.63-.6-1.44-1.065-2.43-1.395-.96-.36-2.295-.78-4.005-1.26-2.43-.69-4.395-1.35-5.895-1.98-1.5-.63-2.79-1.56-3.87-2.79-1.08-1.26-1.62-2.91-1.62-4.95 0-2.82 1.14-4.965 3.42-6.435C32.36 1.325 35.39.59 39.17.59c3.57 0 6.48.765 8.73 2.295 2.28 1.5 3.42 3.765 3.42 6.795v.54h-6.48v-.405c0-1.14-.525-2.04-1.575-2.7-1.02-.66-2.415-.99-4.185-.99-1.89 0-3.345.255-4.365.765-.99.51-1.485 1.215-1.485 2.115 0 .69.3 1.29.9 1.8.6.48 1.35.885 2.25 1.215.9.3 2.175.675 3.825 1.125 2.46.66 4.47 1.32 6.03 1.98 1.59.63 2.955 1.575 4.095 2.835 1.14 1.26 1.71 2.91 1.71 4.95 0 3.3-1.185 5.73-3.555 7.29-2.34 1.56-5.55 2.34-9.63 2.34zM10.745 32.54c-3.42 0-6.045-.78-7.875-2.34C1.04 28.64.125 26.345.125 23.315V21.38h6.48v1.845c0 1.23.345 2.175 1.035 2.835.72.66 1.755.99 3.105.99 1.32 0 2.31-.33 2.97-.99.66-.66.99-1.605.99-2.835V1.13h6.57v22.185c0 3.03-.9 5.325-2.7 6.885-1.8 1.56-4.41 2.34-7.83 2.34z"/>
@@ -29,14 +28,18 @@
             </radialGradient>
           </defs>
         </svg>
-        
+        <label class="btn" for="file-input">Local file:</label>
         <label class="btn btn-electric">
           <input id="file-input" type="file" multiple />
           Select JSON file
         </label>
+        <label class="btn" for="read-url-input">URL:</label>
+          <input id="read-url-input" type="text" />
+          <button class="btn btn-electric" id="read-url-button">Read JSON from URL</button>
       </div>
 
       <div id="drop-area-uploaded">
+        <div>
         <div id="file-name-wrap">
           <svg
             style="width: 16px; height: 20px;"
@@ -52,7 +55,9 @@
           </svg>
           <span class="body-text" id="file-name">file</span>
         </div>
+        <!-- FIXME: Better layout spacing -->
         <button class="btn btn-secondary" id="reset-file-button">Reset</button>
+        </div>
       </div>
     </div>
   </div>
@@ -169,6 +174,14 @@
   input[type="checkbox"],
   input[type="radio"] {
     display: none;
+  }
+  input[type="text"] {
+    width: 200px;
+    font-size: 16px;
+    margin-bottom: 4px;
+    border-width: 2px;
+    border-radius: 4px;
+    border-color: var(--electro-blue-clr);
   }
   /* ///////////////////////////// */
   /*/////////// CLASSES ///////////*/
@@ -377,7 +390,7 @@
   /*  */
   #file-name-wrap {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   #file-name {
     color: var(--n-dark-clr);
@@ -424,6 +437,10 @@
   const dropAreaInfo = document.getElementById("drop-area-info");
   const fileInput = document.getElementById("file-input");
   const fileName = document.getElementById("file-name");
+
+  const urlButton = document.getElementById("read-url-button");
+  const urlInput = document.getElementById("read-url-input");
+
   //
   const hiddenArea = document.getElementById("hidden-area");
   const actionAreaString = document.getElementById("actions-area-string");
@@ -518,6 +535,37 @@
     }
   };
 
+  ///
+  /// Read from URL
+  ///
+  urlButton.onclick = () => {
+    // FIXME: URL validation etc
+    let url = urlInput.value;
+    console.log('fetching ' + url)
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      try {
+        const obj = checkForNestedObj(data)
+        fileName.innerHTML = url;
+    
+        dropAreaNotUploaded.style.display = "none";
+        dropAreaUploaded.style.display = "flex";
+        dropArea.classList.add("uploaded");
+        hiddenArea.style.display = "inline-block";
+        dropAreaInfo.style.display = "none";
+    
+        mapToButtons(obj);
+    
+        let frameHeight = getElementsHeight(".wrapper")
+        parent.postMessage({ pluginMessage: { type: "change-size", frameHeight } }, "*");
+      } catch(error) {
+        console.error(error)
+        alert("Seems like is something wrong with your JSON. Please check it again");
+      }
+    })
+  }
+
   ////////////////////////////////////////////
   ////////////// Create buttons //////////////
   ////////////////////////////////////////////
@@ -595,6 +643,7 @@
 
   fileInput.addEventListener("change", onChange);
   showFileStructure.addEventListener("click", showFileStructureClick);
+
 
   ////////////////////////////////////////////
   ///////////////// Reset file ///////////////
